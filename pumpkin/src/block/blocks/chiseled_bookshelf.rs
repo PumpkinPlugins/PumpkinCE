@@ -65,8 +65,6 @@ impl PumpkinBlock for ChiseledBookshelfBlock {
                         return BlockActionResult::Success;
                     }
                 }
-            } else {
-                return BlockActionResult::Consume;
             }
         }
         BlockActionResult::Continue
