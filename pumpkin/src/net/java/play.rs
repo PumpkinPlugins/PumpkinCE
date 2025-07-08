@@ -1446,11 +1446,12 @@ impl JavaClientPlatform {
                 .await;
             if result.consumes_action() {
                 // TODO: Trigger ANY_BLOCK_USE Criteria
-            }
 
-            if matches!(result, BlockActionResult::SuccessAndSwing) {
-                drop(world); // IMPORTANT: 
-                player.swing_hand(hand, true).await;
+                if matches!(result, BlockActionResult::SuccessAndSwing) {
+                    drop(world); // IMPORTANT: We need to drop this to prevent a deadlock
+                    player.swing_hand(hand, true).await;
+                }
+                return Ok(());
             }
         }
 
