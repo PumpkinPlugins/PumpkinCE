@@ -174,7 +174,7 @@ impl PumpkinBlock for BedBlock {
                 .explode(args.server, bed_head_pos.to_centered_f64(), 5.0)
                 .await;
 
-            return BlockActionResult::Success;
+            return BlockActionResult::SuccessAndSwing;
         }
 
         // Make sure the bed is not obstructed
@@ -195,7 +195,7 @@ impl PumpkinBlock for BedBlock {
                     true,
                 )
                 .await;
-            return BlockActionResult::Success;
+            return BlockActionResult::SuccessAndSwing;
         }
 
         // Make sure the bed is not occupied
@@ -208,7 +208,7 @@ impl PumpkinBlock for BedBlock {
                     true,
                 )
                 .await;
-            return BlockActionResult::Success;
+            return BlockActionResult::SuccessAndSwing;
         }
 
         // Make sure player is close enough
@@ -227,7 +227,7 @@ impl PumpkinBlock for BedBlock {
                     true,
                 )
                 .await;
-            return BlockActionResult::Success;
+            return BlockActionResult::SuccessAndSwing;
         }
 
         // Set respawn point
@@ -253,7 +253,7 @@ impl PumpkinBlock for BedBlock {
                     true,
                 )
                 .await;
-            return BlockActionResult::Success;
+            return BlockActionResult::SuccessAndSwing;
         }
 
         // Make sure there are no monsters nearby
@@ -272,14 +272,14 @@ impl PumpkinBlock for BedBlock {
                         true,
                     )
                     .await;
-                return BlockActionResult::Continue;
+                return BlockActionResult::SuccessAndSwing;
             }
         }
 
         args.player.sleep(bed_head_pos).await;
         Self::set_occupied(true, args.world, args.block, args.position, state_id).await;
 
-        BlockActionResult::Success
+        BlockActionResult::SuccessAndSwing
     }
 }
 

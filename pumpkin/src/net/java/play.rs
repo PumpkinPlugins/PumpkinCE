@@ -46,6 +46,7 @@ use pumpkin_world::block::entities::command_block::CommandBlockEntity;
 use pumpkin_world::block::entities::sign::SignBlockEntity;
 use pumpkin_world::item::ItemStack;
 use pumpkin_world::world::BlockFlags;
+use tokio::sync::Mutex;
 use uuid::Uuid;
 
 use crate::block::pumpkin_block::BlockHitResult;
@@ -1406,7 +1407,7 @@ impl JavaClientPlatform {
             return Err(BlockPlacingError::BlockOutOfReach.into());
         }
 
-        let Ok(face) = BlockDirection::try_from(use_item_on.face.0) else {
+        let Ok(side) = BlockDirection::try_from(use_item_on.face.0) else {
             return Err(BlockPlacingError::InvalidBlockFace.into());
         };
 
@@ -1431,50 +1432,25 @@ impl JavaClientPlatform {
         if !(sneaking
             && (!held_item.lock().await.is_empty() || !off_hand_item.lock().await.is_empty()))
         {
-            match match server
-                .block_registry
-                .use_with_item(
-                    block,
+            let result = self
+                .call_use_item_on(
                     player,
                     &position,
-                    &BlockHitResult {
-                        side: &face,
-                        cursor_pos: &cursor_pos,
-                    },
+                    &cursor_pos,
+                    &side,
                     &held_item,
-                    server,
                     &world,
+                    block,
+                    server,
                 )
-                .await
-            {
-                BlockActionResult::PassToDefault => {
-                    server
-                        .block_registry
-                        .on_use(
-                            block,
-                            player,
-                            &position,
-                            &BlockHitResult {
-                                side: &face,
-                                cursor_pos: &cursor_pos,
-                            },
-                            server,
-                            &world,
-                        )
-                        .await
-                }
-                BlockActionResult::Fail => BlockActionResult::Fail,
-                BlockActionResult::Consume => BlockActionResult::Consume,
-                BlockActionResult::Continue => BlockActionResult::Continue,
-                BlockActionResult::Success => BlockActionResult::Success,
-            } {
-                BlockActionResult::Fail => return Ok(()),
-                BlockActionResult::Success | BlockActionResult::Consume => {
-                    drop(world); // We need to drop the lock because swing hand needs to lock the world
-                    player.swing_hand(hand, true).await;
-                    return Ok(());
-                }
-                BlockActionResult::Continue | BlockActionResult::PassToDefault => {} // Do nothing,
+                .await;
+            if result.consumes_action() {
+                // TODO: Trigger ANY_BLOCK_USE Criteria
+            }
+
+            if matches!(result, BlockActionResult::SuccessAndSwing) {
+                drop(world); // IMPORTANT: 
+                player.swing_hand(hand, true).await;
             }
         }
 
@@ -1489,7 +1465,7 @@ impl JavaClientPlatform {
                 held_item.lock().await.item,
                 player,
                 position,
-                face,
+                side,
                 block,
                 server,
             )
@@ -1499,13 +1475,13 @@ impl JavaClientPlatform {
         // Check if the item is a block, because not every item can be placed :D
         if let Some(block) = get_block_by_item(held_item.lock().await.item.id) {
             should_try_decrement = self
-                .run_is_block_place(player, block, server, use_item_on, position, face)
+                .run_is_block_place(player, block, server, use_item_on, position, side)
                 .await?;
         }
 
         // Check if the item is a spawn egg
         if let Some(entity) = entity_from_egg(held_item.lock().await.item.id) {
-            self.spawn_entity_from_egg(player, entity, position, face)
+            self.spawn_entity_from_egg(player, entity, position, side)
                 .await;
             should_try_decrement = true;
         }
@@ -1519,6 +1495,57 @@ impl JavaClientPlatform {
         }
 
         Ok(())
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    async fn call_use_item_on(
+        &self,
+        player: &Player,
+        position: &BlockPos,
+        cursor_pos: &Vector3<f32>,
+        side: &BlockDirection,
+        held_item: &Arc<Mutex<ItemStack>>,
+        world: &Arc<World>,
+        block: &Block,
+        server: &Arc<Server>,
+    ) -> BlockActionResult {
+        let result = server
+            .block_registry
+            .use_with_item(
+                block,
+                player,
+                position,
+                &BlockHitResult { side, cursor_pos },
+                held_item,
+                server,
+                world,
+            )
+            .await;
+
+        if result.consumes_action() {
+            // TODO: Trigger ITEM_USED_ON_BLOCK Criteria
+            return result;
+        }
+
+        if matches!(result, BlockActionResult::TryWithEmptyHand) {
+            let result = server
+                .block_registry
+                .on_use(
+                    block,
+                    player,
+                    position,
+                    &BlockHitResult { side, cursor_pos },
+                    server,
+                    world,
+                )
+                .await;
+
+            if result.consumes_action() {
+                return result;
+            }
+        }
+
+        BlockActionResult::Pass
     }
 
     pub async fn handle_sign_update(&self, player: &Player, sign_data: SUpdateSign) {
