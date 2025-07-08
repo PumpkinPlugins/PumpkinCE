@@ -1447,7 +1447,7 @@ impl JavaClientPlatform {
             if result.consumes_action() {
                 // TODO: Trigger ANY_BLOCK_USE Criteria
 
-                if matches!(result, BlockActionResult::SuccessAndSwing) {
+                if matches!(result, BlockActionResult::SuccessServer) {
                     drop(world); // IMPORTANT: We need to drop this to prevent a deadlock
                     player.swing_hand(hand, true).await;
                 }

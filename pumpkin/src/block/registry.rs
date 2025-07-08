@@ -29,24 +29,24 @@ use super::pumpkin_fluid::PumpkinFluid;
 
 // InteractionResult.java
 pub enum BlockActionResult {
-    /// Action was successful and we should swing the hand | Same as SUCCESS in vanilla
+    /// Action was successful | Same as SUCCESS in vanilla
     Success,
-    /// Action was successful and we should swing the hand | Same as `SUCCESS_SERVER` in vanilla
-    SuccessAndSwing,
-    /// Block other actions from being executed and we should swing the hand | Same as CONSUME in vanilla
+    /// Action was successful and we should swing the hand for the server | Same as `SUCCESS_SERVER` in vanilla
+    SuccessServer,
+    /// Block other actions from being executed | Same as CONSUME in vanilla
     Consume,
-    /// Block other actions from being executed | Same as FAIL in vanilla
+    /// Allow other actions to be executed, but indicate it failed | Same as FAIL in vanilla
     Fail,
     /// Allow other actions to be executed | Same as PASS in vanilla
     Pass,
-    /// Use default action for the block | Same as `TRY_WITH_EMPTY_HAND` in vanilla
+    /// Use default action for the block: `normal_use` | Same as `TRY_WITH_EMPTY_HAND` in vanilla
     TryWithEmptyHand,
 }
 
 impl BlockActionResult {
     #[must_use]
     pub fn consumes_action(&self) -> bool {
-        matches!(self, Self::Consume | Self::Success | Self::SuccessAndSwing)
+        matches!(self, Self::Consume | Self::Success | Self::SuccessServer)
     }
 }
 
