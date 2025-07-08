@@ -1835,8 +1835,6 @@ impl Player {
 
     /// Swing the hand of the player
     pub async fn swing_hand(&self, hand: Hand, all: bool) {
-        // TODO: We need to check if the player is already swinging otherwise we sent the packet twice
-
         let world = self.world().await;
         let entity_id = VarInt(self.entity_id());
 
