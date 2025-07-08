@@ -1542,6 +1542,7 @@ impl JavaClientPlatform {
                 .await;
 
             if result.consumes_action() {
+                // TODO: Trigger DEFAULT_BLOCK_USE Criteria
                 return result;
             }
         }
