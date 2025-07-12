@@ -1435,9 +1435,7 @@ impl JavaClientPlatform {
             .load(std::sync::atomic::Ordering::Relaxed);
 
         // Code based on the java class ServerPlayerInteractionManager
-        if !(sneaking
-            && (!held_item_empty || !off_hand_item_empty))
-        {
+        if !(sneaking && (!held_item_empty || !off_hand_item_empty)) {
             let result = self
                 .call_use_item_on(
                     player,
