@@ -6,12 +6,12 @@ use crate::block::pumpkin_block::{
 };
 use async_trait::async_trait;
 use pumpkin_data::{
-    Block, FacingExt,
+    Block, BlockStateId, FacingExt,
     block_properties::{BlockProperties, ObserverLikeProperties},
 };
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::{BlockStateId, chunk::TickPriority, world::BlockFlags};
+use pumpkin_world::{chunk::TickPriority, world::BlockFlags};
 
 use crate::{
     block::pumpkin_block::{OnNeighborUpdateArgs, PumpkinBlock},

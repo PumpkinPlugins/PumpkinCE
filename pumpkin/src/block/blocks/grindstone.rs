@@ -1,11 +1,11 @@
 use async_trait::async_trait;
 use pumpkin_data::{
-    Block, BlockDirection, HorizontalFacingExt,
+    Block, BlockDirection, BlockStateId, HorizontalFacingExt,
     block_properties::{BlockFace, BlockProperties, GrindstoneLikeProperties},
 };
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::{BlockStateId, world::BlockAccessor};
+use pumpkin_world::world::BlockAccessor;
 
 use crate::block::pumpkin_block::CanPlaceAtArgs;
 use crate::block::pumpkin_block::PumpkinBlock;

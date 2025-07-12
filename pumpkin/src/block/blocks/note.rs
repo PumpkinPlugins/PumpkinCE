@@ -7,14 +7,13 @@ use async_trait::async_trait;
 use pumpkin_data::block_properties::Axis;
 use pumpkin_data::sound::{Sound, SoundCategory};
 use pumpkin_data::{
-    Block,
+    Block, BlockStateId,
     block_properties::{
         BlockProperties, EnumVariants, Instrument, Integer0To24, NoteBlockLikeProperties,
     },
 };
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::BlockStateId;
 use pumpkin_world::world::BlockFlags;
 
 use crate::{

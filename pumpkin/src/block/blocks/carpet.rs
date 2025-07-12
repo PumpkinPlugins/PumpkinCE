@@ -5,7 +5,7 @@ use async_trait::async_trait;
 use pumpkin_data::tag::{RegistryKey, get_tag_values};
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::BlockStateId;
+use pumpkin_data::BlockStateId;
 use pumpkin_world::chunk::TickPriority;
 use pumpkin_world::world::{BlockAccessor, BlockFlags};
 

@@ -6,6 +6,7 @@ use pumpkin_data::BlockDirection;
 use pumpkin_data::item::Item;
 use pumpkin_data::sound::Sound;
 use pumpkin_data::sound::SoundCategory;
+use pumpkin_data::BlockStateId;
 use pumpkin_util::math::position::BlockPos;
 use pumpkin_world::world::BlockFlags;
 
@@ -35,7 +36,7 @@ impl PumpkinItem for FireChargeItem {
         _server: &Server,
     ) {
         Ignition::ignite_block(
-            |world: Arc<World>, pos: BlockPos, new_state_id: u16| async move {
+            |world: Arc<World>, pos: BlockPos, new_state_id: BlockStateId| async move {
                 world
                     .set_block_state(&pos, new_state_id, BlockFlags::NOTIFY_ALL)
                     .await;

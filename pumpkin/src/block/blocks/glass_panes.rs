@@ -1,14 +1,13 @@
 use crate::block::pumpkin_block::GetStateForNeighborUpdateArgs;
 use crate::block::pumpkin_block::OnPlaceArgs;
 use async_trait::async_trait;
-use pumpkin_data::Block;
+use pumpkin_data::{Block, BlockStateId};
 use pumpkin_data::BlockDirection;
 use pumpkin_data::block_properties::BlockProperties;
 use pumpkin_data::tag::RegistryKey;
 use pumpkin_data::tag::Tagable;
 use pumpkin_data::tag::get_tag_values;
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::BlockStateId;
 
 type GlassPaneProperties = pumpkin_data::block_properties::OakFenceLikeProperties;
 
@@ -49,7 +48,7 @@ pub async fn compute_pane_state(
     world: &World,
     block: &Block,
     block_pos: &BlockPos,
-) -> u16 {
+) -> BlockStateId {
     for direction in BlockDirection::horizontal() {
         let other_block_pos = block_pos.offset(direction.to_offset());
         let (other_block, other_block_state) =

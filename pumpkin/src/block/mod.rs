@@ -68,11 +68,10 @@ use fluid::lava::FlowingLava;
 use fluid::water::FlowingWater;
 use loot::LootTableExt;
 use pumpkin_data::block_properties::Integer0To15;
-use pumpkin_data::{Block, BlockState};
+use pumpkin_data::{Block, BlockState, BlockStateId};
 
 use pumpkin_util::math::position::BlockPos;
 use pumpkin_util::random::{RandomGenerator, get_seed, xoroshiro128::Xoroshiro};
-use pumpkin_world::BlockStateId;
 
 use crate::block::blocks::banners::BannerBlock;
 use crate::block::blocks::cake::CakeBlock;

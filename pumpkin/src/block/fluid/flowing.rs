@@ -3,11 +3,11 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use pumpkin_data::{
-    Block, BlockDirection,
+    Block, BlockStateId, BlockDirection,
     fluid::{EnumVariants, Falling, Fluid, FluidProperties, Level},
 };
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::{BlockId, BlockStateId, world::BlockFlags};
+use pumpkin_world::{BlockId, world::BlockFlags};
 
 use crate::world::World;
 type FlowingFluidProperties = pumpkin_data::fluid::FlowingWaterLikeFluidProperties;
@@ -148,7 +148,7 @@ pub trait FlowingFluid {
         props: &FlowingFluidProperties,
     ) {
         let below_pos = block_pos.down();
-        let below_can_replace = !self.is_solid_or_source(world, &below_pos, 0, fluid).await;
+        let below_can_replace = !self.is_solid_or_source(world, &below_pos, BlockStateId::AIR, fluid).await;
 
         if below_can_replace {
             let mut new_props = FlowingFluidProperties::default(fluid);

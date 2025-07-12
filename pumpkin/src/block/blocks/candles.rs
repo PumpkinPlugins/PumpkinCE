@@ -1,12 +1,12 @@
 use async_trait::async_trait;
 use pumpkin_data::{
-    BlockDirection,
+    BlockDirection, BlockStateId,
     block_properties::{BlockProperties, CandleLikeProperties, EnumVariants, Integer1To4},
     entity::EntityPose,
     item::Item,
     tag::{RegistryKey, get_tag_values},
 };
-use pumpkin_world::{BlockStateId, world::BlockFlags};
+use pumpkin_world::world::BlockFlags;
 
 use crate::{
     block::{

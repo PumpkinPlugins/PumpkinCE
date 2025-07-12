@@ -2,10 +2,7 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use pumpkin_data::{
-    Block, BlockState,
-    block_properties::{blocks_movement, get_block_and_state_by_state_id, get_block_by_state_id},
-    chunk::Biome,
-    tag::Tagable,
+    block_properties::{blocks_movement, get_block_and_state_by_state_id, get_block_by_state_id}, chunk::Biome, tag::Tagable, Block, BlockState, BlockStateId
 };
 use pumpkin_util::{
     HeightMap,
@@ -14,9 +11,7 @@ use pumpkin_util::{
 };
 
 use crate::{
-    BlockStateId,
     biome::{BiomeSupplier, MultiNoiseBiomeSupplier, end::TheEndBiomeSupplier, hash_seed},
-    block::RawBlockState,
     chunk::CHUNK_AREA,
     dimension::Dimension,
     generation::{biome, positions::chunk_pos},
@@ -196,7 +191,7 @@ impl<'a> ProtoChunk<'a> {
             noise_sampler: sampler,
             multi_noise_sampler,
             surface_height_estimate_sampler,
-            flat_block_map: vec![0; CHUNK_AREA * height as usize].into_boxed_slice(),
+            flat_block_map: vec![BlockStateId::AIR; CHUNK_AREA * height as usize].into_boxed_slice(),
             flat_biome_map: vec![
                 &Biome::PLAINS;
                 biome_coords::from_block(CHUNK_DIM as usize)
@@ -349,17 +344,17 @@ impl<'a> ProtoChunk<'a> {
     }
 
     #[inline]
-    pub fn get_block_state(&self, local_pos: &Vector3<i32>) -> RawBlockState {
+    pub fn get_block_state(&self, local_pos: &Vector3<i32>) -> BlockStateId {
         let local_pos = Vector3::new(
             local_pos.x & 15,
             local_pos.y - self.bottom_y() as i32,
             local_pos.z & 15,
         );
         if local_pos.y < 0 || local_pos.y >= self.height() as i32 {
-            return RawBlockState::AIR;
+            return BlockStateId::AIR;
         }
         let index = self.local_pos_to_block_index(&local_pos);
-        RawBlockState(self.flat_block_map[index])
+        self.flat_block_map[index]
     }
 
     pub fn set_block_state(&mut self, pos: &Vector3<i32>, block_state: &BlockState) {
@@ -773,7 +768,7 @@ impl BlockAccessor for ProtoChunk<'_> {
         &'static pumpkin_data::BlockState,
     ) {
         let id = self.get_block_state(&position.0);
-        get_block_and_state_by_state_id(id.0)
+        get_block_and_state_by_state_id(id)
     }
 }
 
@@ -781,7 +776,7 @@ impl BlockAccessor for ProtoChunk<'_> {
 mod test {
     use std::sync::LazyLock;
 
-    use pumpkin_data::noise_router::{OVERWORLD_BASE_NOISE_ROUTER, WrapperType};
+    use pumpkin_data::{noise_router::{WrapperType, OVERWORLD_BASE_NOISE_ROUTER}, BlockStateId};
     use pumpkin_util::math::vector2::Vector2;
 
     use crate::{
@@ -815,7 +810,7 @@ mod test {
     #[test]
     fn test_no_blend_no_beard_only_cell_cache() {
         // We say no wrapper, but it technically has a top-level cell cache
-        let expected_data: Vec<u16> =
+        let expected_data: Vec<BlockStateId> =
             read_data_from_file!("../../assets/no_blend_no_beard_only_cell_cache_0_0.chunk");
 
         let mut base_router =
@@ -871,7 +866,7 @@ mod test {
     fn test_no_blend_no_beard_only_cell_2d_cache() {
         // it technically has a top-level cell cache
         // should be the same as only cell_cache
-        let expected_data: Vec<u16> =
+        let expected_data: Vec<BlockStateId> =
             read_data_from_file!("../../assets/no_blend_no_beard_only_cell_cache_0_0.chunk");
 
         let mut base_router =
@@ -927,7 +922,7 @@ mod test {
     #[test]
     fn test_no_blend_no_beard_only_cell_flat_cache() {
         // it technically has a top-level cell cache
-        let expected_data: Vec<u16> = read_data_from_file!(
+        let expected_data: Vec<BlockStateId> = read_data_from_file!(
             "../../assets/no_blend_no_beard_only_cell_cache_flat_cache_0_0.chunk"
         );
 
@@ -984,7 +979,7 @@ mod test {
     #[test]
     fn test_no_blend_no_beard_only_cell_once_cache() {
         // it technically has a top-level cell cache
-        let expected_data: Vec<u16> = read_data_from_file!(
+        let expected_data: Vec<BlockStateId> = read_data_from_file!(
             "../../assets/no_blend_no_beard_only_cell_cache_once_cache_0_0.chunk"
         );
 
@@ -1041,7 +1036,7 @@ mod test {
     #[test]
     fn test_no_blend_no_beard_only_cell_interpolated() {
         // it technically has a top-level cell cache
-        let expected_data: Vec<u16> = read_data_from_file!(
+        let expected_data: Vec<BlockStateId> = read_data_from_file!(
             "../../assets/no_blend_no_beard_only_cell_cache_interpolated_0_0.chunk"
         );
 
@@ -1097,7 +1092,7 @@ mod test {
 
     #[test]
     fn test_no_blend_no_beard() {
-        let expected_data: Vec<u16> =
+        let expected_data: Vec<BlockStateId> =
             read_data_from_file!("../../assets/no_blend_no_beard_0_0.chunk");
         let surface_config = GENERATION_SETTINGS
             .get(&GeneratorSetting::Overworld)
@@ -1112,13 +1107,13 @@ mod test {
 
         assert_eq!(
             expected_data,
-            chunk.flat_block_map.into_iter().collect::<Vec<u16>>()
+            chunk.flat_block_map.into_iter().collect::<Vec<BlockStateId>>()
         );
     }
 
     #[test]
     fn test_no_blend_no_beard_aquifer() {
-        let expected_data: Vec<u16> =
+        let expected_data: Vec<BlockStateId> =
             read_data_from_file!("../../assets/no_blend_no_beard_7_4.chunk");
         let surface_config = GENERATION_SETTINGS
             .get(&GeneratorSetting::Overworld)
@@ -1133,7 +1128,7 @@ mod test {
 
         assert_eq!(
             expected_data,
-            chunk.flat_block_map.into_iter().collect::<Vec<u16>>()
+            chunk.flat_block_map.into_iter().collect::<Vec<BlockStateId>>()
         );
     }
 
@@ -1157,7 +1152,7 @@ mod test {
             .zip(chunk.flat_block_map)
             .enumerate()
             .for_each(|(index, (expected, actual))| {
-                if expected != actual {
+                if BlockStateId(expected) != actual {
                     panic!("expected {expected}, was {actual} (at {index})");
                 }
             });
@@ -1183,7 +1178,7 @@ mod test {
             .zip(chunk.flat_block_map)
             .enumerate()
             .for_each(|(index, (expected, actual))| {
-                if expected != actual {
+                if BlockStateId(expected) != actual {
                     panic!("expected {expected}, was {actual} (at {index})");
                 }
             });
@@ -1191,7 +1186,7 @@ mod test {
 
     #[test]
     fn test_no_blend_no_beard_badlands2() {
-        let expected_data: Vec<u16> =
+        let expected_data: Vec<BlockStateId> =
             read_data_from_file!("../../assets/no_blend_no_beard_13579_-6_11.chunk");
         let surface_config = GENERATION_SETTINGS
             .get(&GeneratorSetting::Overworld)
@@ -1217,7 +1212,7 @@ mod test {
 
     #[test]
     fn test_no_blend_no_beard_badlands3() {
-        let expected_data: Vec<u16> =
+        let expected_data: Vec<BlockStateId> =
             read_data_from_file!("../../assets/no_blend_no_beard_13579_-2_15.chunk");
         let surface_config = GENERATION_SETTINGS
             .get(&GeneratorSetting::Overworld)
@@ -1243,7 +1238,7 @@ mod test {
 
     #[test]
     fn test_no_blend_no_beard_surface() {
-        let expected_data: Vec<u16> =
+        let expected_data: Vec<BlockStateId> =
             read_data_from_file!("../../assets/no_blend_no_beard_surface_0_0.chunk");
         let surface_config = GENERATION_SETTINGS
             .get(&GeneratorSetting::Overworld)
@@ -1272,7 +1267,7 @@ mod test {
 
     #[test]
     fn test_no_blend_no_beard_surface_badlands() {
-        let expected_data: Vec<u16> =
+        let expected_data: Vec<BlockStateId> =
             read_data_from_file!("../../assets/no_blend_no_beard_surface_badlands_-595_544.chunk");
         let surface_config = GENERATION_SETTINGS
             .get(&GeneratorSetting::Overworld)
@@ -1301,7 +1296,7 @@ mod test {
 
     #[test]
     fn test_no_blend_no_beard_surface_badlands2() {
-        let expected_data: Vec<u16> =
+        let expected_data: Vec<BlockStateId> =
             read_data_from_file!("../../assets/no_blend_no_beard_surface_13579_-6_11.chunk");
         let surface_config = GENERATION_SETTINGS
             .get(&GeneratorSetting::Overworld)
@@ -1330,7 +1325,7 @@ mod test {
 
     #[test]
     fn test_no_blend_no_beard_surface_badlands3() {
-        let expected_data: Vec<u16> =
+        let expected_data: Vec<BlockStateId> =
             read_data_from_file!("../../assets/no_blend_no_beard_surface_13579_-7_9.chunk");
         let surface_config = GENERATION_SETTINGS
             .get(&GeneratorSetting::Overworld)
@@ -1359,7 +1354,7 @@ mod test {
 
     #[test]
     fn test_no_blend_no_beard_surface_biome_blend() {
-        let expected_data: Vec<u16> =
+        let expected_data: Vec<BlockStateId> =
             read_data_from_file!("../../assets/no_blend_no_beard_surface_13579_-2_15.chunk");
         let surface_config = GENERATION_SETTINGS
             .get(&GeneratorSetting::Overworld)
@@ -1388,7 +1383,7 @@ mod test {
 
     #[test]
     fn test_no_blend_no_beard_surface_frozen_ocean() {
-        let expected_data: Vec<u16> = read_data_from_file!(
+        let expected_data: Vec<BlockStateId> = read_data_from_file!(
             "../../assets/no_blend_no_beard_surface_frozen_ocean_-119_183.chunk"
         );
         let surface_config = GENERATION_SETTINGS

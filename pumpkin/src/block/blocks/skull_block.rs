@@ -3,7 +3,7 @@ use crate::block::pumpkin_block::{BlockMetadata, OnNeighborUpdateArgs, OnPlaceAr
 use crate::entity::EntityBase;
 use async_trait::async_trait;
 use pumpkin_data::block_properties::BlockProperties;
-use pumpkin_world::BlockStateId;
+use pumpkin_data::BlockStateId;
 use pumpkin_world::world::BlockFlags;
 
 type SkeletonSkullLikeProperties = pumpkin_data::block_properties::SkeletonSkullLikeProperties;

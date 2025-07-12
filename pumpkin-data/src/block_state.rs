@@ -1,11 +1,14 @@
 use pumpkin_util::math::vector3::Vector3;
+use serde::Deserialize;
 
-use crate::block_properties::{COLLISION_SHAPES, Instrument, get_block_by_state_id};
+use crate::block_properties::{
+    COLLISION_SHAPES, Instrument, get_block, get_block_by_state_id, get_state_by_state_id,
+};
 use crate::{Block, BlockDirection, CollisionShape};
 
 #[derive(Debug)]
 pub struct BlockState {
-    pub id: u16,
+    pub id: BlockStateId,
     pub state_flags: u8,
     pub side_flags: u8,
     pub instrument: Instrument,
@@ -153,3 +156,50 @@ const WEST_SIDE_SOLID: u8 = 0b00010000;
 const EAST_SIDE_SOLID: u8 = 0b00100000;
 const DOWN_CENTER_SOLID: u8 = 0b01000000;
 const UP_CENTER_SOLID: u8 = 0b10000000;
+
+/// Instead of using a normal memory-heavy BlockState, this is used for internal representation in chunks to save memory
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Default, Deserialize)]
+pub struct BlockStateId(pub u16);
+
+impl std::fmt::Display for BlockStateId {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl BlockStateId {
+    pub const AIR: BlockStateId = BlockStateId(0);
+
+    /// Get a Block from the Vanilla Block registry at Runtime
+    pub fn new(registry_id: &str) -> Option<Self> {
+        let block = get_block(registry_id);
+        block.map(|block| block.default_state.id)
+    }
+
+    #[inline]
+    pub fn to_state(self) -> &'static BlockState {
+        get_state_by_state_id(self)
+    }
+
+    #[inline]
+    pub fn to_block(self) -> &'static Block {
+        get_block_by_state_id(self)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::BlockStateId;
+
+    #[test]
+    fn not_existing() {
+        let result = BlockStateId::new("this_block_does_not_exist");
+        assert!(result.is_none());
+    }
+
+    #[test]
+    fn does_exist() {
+        let result = BlockStateId::new("dirt");
+        assert!(result.is_some());
+    }
+}

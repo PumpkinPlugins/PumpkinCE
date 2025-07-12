@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use pumpkin_data::{
-    Block,
+    Block, BlockStateId,
     block_properties::{BlockProperties, ComposterLikeProperties, EnumVariants, Integer0To8},
     composter_increase_chance::get_composter_increase_chance_from_item_id,
     entity::EntityType,
@@ -11,7 +11,7 @@ use pumpkin_data::{
 };
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::{BlockStateId, chunk::TickPriority, item::ItemStack, world::BlockFlags};
+use pumpkin_world::{chunk::TickPriority, item::ItemStack, world::BlockFlags};
 use rand::Rng;
 use uuid::Uuid;
 

@@ -1,5 +1,6 @@
 use crate::block::entities::BlockEntity;
 use palette::{BiomePalette, BlockPalette};
+use pumpkin_data::BlockStateId;
 use pumpkin_nbt::compound::NbtCompound;
 use pumpkin_nbt::nbt_long_array;
 use pumpkin_util::math::{position::BlockPos, vector2::Vector2};
@@ -8,7 +9,6 @@ use std::collections::VecDeque;
 use std::{collections::HashMap, sync::Arc};
 use thiserror::Error;
 
-use crate::BlockStateId;
 use crate::chunk::format::LightContainer;
 
 pub mod format;
@@ -222,7 +222,7 @@ pub struct ChunkSections {
 
 impl ChunkSections {
     #[cfg(test)]
-    pub fn dump_blocks(&self) -> Vec<u16> {
+    pub fn dump_blocks(&self) -> Vec<BlockStateId> {
         // TODO: this is not optimal, we could use rust iters
         let mut dump = Vec::new();
         for section in self.sections.iter() {

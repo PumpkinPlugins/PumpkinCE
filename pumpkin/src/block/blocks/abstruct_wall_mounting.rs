@@ -1,10 +1,10 @@
 use async_trait::async_trait;
 use pumpkin_data::{
-    Block, BlockDirection,
+    Block, BlockDirection, BlockStateId,
     block_properties::{BlockFace, HorizontalFacing},
 };
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::{BlockStateId, world::BlockAccessor};
+use pumpkin_world::world::BlockAccessor;
 
 use crate::{block::pumpkin_block::GetStateForNeighborUpdateArgs, entity::player::Player};
 

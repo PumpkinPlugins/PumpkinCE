@@ -1,5 +1,5 @@
 use crate::{
-    BlockState, BlockStateRef,
+    BlockState, BlockStateRef, BlockStateId,
     block_properties::get_state_by_state_id,
     tag::{RegistryKey, Tagable},
 };
@@ -67,7 +67,7 @@ impl FromResourceLocation for &'static Block {
 }
 
 impl Block {
-    pub fn is_waterlogged(&self, state_id: u16) -> bool {
+    pub fn is_waterlogged(&self, state_id: BlockStateId) -> bool {
         self.properties(state_id).is_some_and(|properties| {
             properties
                 .to_props()

@@ -2,7 +2,7 @@ use crate::block::pumpkin_block::{OnPlaceArgs, PumpkinBlock};
 use async_trait::async_trait;
 use pumpkin_data::block_properties::{BlockProperties, LecternLikeProperties};
 use pumpkin_macros::pumpkin_block;
-use pumpkin_world::BlockStateId;
+use pumpkin_data::BlockStateId;
 
 #[pumpkin_block("minecraft:lectern")]
 pub struct LecternBlock;

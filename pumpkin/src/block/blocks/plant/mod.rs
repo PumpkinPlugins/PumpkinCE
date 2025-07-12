@@ -1,6 +1,6 @@
-use pumpkin_data::{Block, tag::Tagable};
+use pumpkin_data::{Block, BlockStateId, tag::Tagable};
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::{BlockStateId, world::BlockAccessor};
+use pumpkin_world::world::BlockAccessor;
 
 pub mod bush;
 pub mod crop;

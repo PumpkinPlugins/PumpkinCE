@@ -1,5 +1,5 @@
 use async_trait::async_trait;
-use pumpkin_data::{Block, BlockDirection};
+use pumpkin_data::{Block, BlockDirection, BlockStateId};
 use pumpkin_util::HeightMap;
 use serde::Deserialize;
 use std::collections::HashMap;
@@ -15,7 +15,6 @@ use pumpkin_util::math::vector3::Vector3;
 use pumpkin_util::random::{RandomGenerator, RandomImpl};
 
 use crate::ProtoChunk;
-use crate::block::RawBlockState;
 use crate::generation::block_predicate::BlockPredicate;
 use crate::generation::height_limit::HeightLimitView;
 use crate::generation::height_provider::HeightProvider;
@@ -372,7 +371,7 @@ impl CountOnEveryLayerPlacementModifier {
         i32::MAX
     }
 
-    fn blocks_spawn(state: &RawBlockState) -> bool {
+    fn blocks_spawn(state: &BlockStateId) -> bool {
         let block = state.to_block();
         state.to_state().is_air() || block == &Block::WATER || block == &Block::LAVA
     }

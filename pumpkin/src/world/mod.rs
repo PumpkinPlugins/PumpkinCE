@@ -39,7 +39,7 @@ use pumpkin_data::BlockDirection;
 use pumpkin_data::entity::EffectType;
 use pumpkin_data::fluid::{Falling, FluidProperties};
 use pumpkin_data::{
-    Block,
+    Block, BlockStateId,
     block_properties::{
         get_block_and_state_by_state_id, get_block_by_state_id, get_state_by_state_id,
     },
@@ -97,7 +97,7 @@ use pumpkin_util::{
     math::{boundingbox::BoundingBox, position::BlockPos, vector3::Vector3},
 };
 use pumpkin_world::{
-    BlockStateId, GENERATION_SETTINGS, GeneratorSetting, biome, block::entities::BlockEntity,
+    GENERATION_SETTINGS, GeneratorSetting, biome, block::entities::BlockEntity,
     chunk::io::Dirtiable, item::ItemStack, world::SimpleWorld,
 };
 use pumpkin_world::{chunk::ChunkData, world::BlockAccessor};
@@ -172,7 +172,7 @@ pub struct World {
     pub block_registry: Arc<BlockRegistry>,
     synced_block_event_queue: Mutex<Vec<BlockEvent>>,
     /// A map of unsent block changes, keyed by block position.
-    unsent_block_changes: Mutex<HashMap<BlockPos, u16>>,
+    unsent_block_changes: Mutex<HashMap<BlockPos, BlockStateId>>,
 }
 
 impl World {
@@ -606,7 +606,7 @@ impl World {
                 let (block_pos, block_state_id) = chunk_section[0];
                 self.broadcast_packet_all(&CBlockUpdate::new(
                     block_pos,
-                    i32::from(block_state_id).into(),
+                    i32::from(block_state_id.0).into(),
                 ))
                 .await;
             } else {
@@ -1973,7 +1973,7 @@ impl World {
                 water_props.falling = Falling::False;
                 water_props.to_state_id(&Fluid::FLOWING_WATER)
             } else {
-                0
+                BlockStateId::AIR
             };
 
             let broken_state_id = self.set_block_state(position, new_state_id, flags).await;
@@ -1982,7 +1982,7 @@ impl World {
                 let particles_packet = CWorldEvent::new(
                     WorldEvent::BlockBroken as i32,
                     *position,
-                    broken_state_id.into(),
+                    broken_state_id.0 as i32,
                     false,
                 );
                 match cause {
@@ -2066,7 +2066,7 @@ impl World {
     }
 
     pub async fn get_block_state_id(&self, position: &BlockPos) -> BlockStateId {
-        self.level.get_block_state(position).await.0
+        self.level.get_block_state(position).await
     }
 
     /// Gets the `BlockState` from the block registry. Returns Air if the block state was not found.

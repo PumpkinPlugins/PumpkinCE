@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 use pumpkin_data::block_properties::{BlockProperties, HorizontalFacing, Integer1To4};
-use pumpkin_world::BlockStateId;
+use pumpkin_data::BlockStateId;
 
 use crate::block::pumpkin_block::{CanUpdateAtArgs, PumpkinBlock};
 use crate::block::{BlockIsReplacing, pumpkin_block::OnPlaceArgs};

@@ -2,13 +2,13 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use pumpkin_data::{
-    Block, BlockDirection,
+    Block, BlockDirection, BlockStateId,
     fluid::{Falling, Fluid, FluidProperties, Level},
     world::WorldEvent,
 };
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::{BlockStateId, world::BlockFlags};
+use pumpkin_world::world::BlockFlags;
 
 use crate::{block::pumpkin_fluid::PumpkinFluid, entity::EntityBase, world::World};
 

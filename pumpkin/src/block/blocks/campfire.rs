@@ -1,11 +1,10 @@
 use async_trait::async_trait;
 use pumpkin_data::{
-    Block, BlockDirection,
+    Block, BlockDirection, BlockStateId,
     block_properties::{BlockProperties, CampfireLikeProperties},
     damage::DamageType,
     fluid::Fluid,
 };
-use pumpkin_world::BlockStateId;
 
 use crate::{
     block::{

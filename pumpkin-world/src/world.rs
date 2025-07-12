@@ -2,11 +2,9 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use bitflags::bitflags;
-use pumpkin_data::BlockDirection;
+use pumpkin_data::{BlockDirection, BlockStateId};
 use pumpkin_util::math::position::BlockPos;
 use thiserror::Error;
-
-use crate::BlockStateId;
 
 bitflags! {
     #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]

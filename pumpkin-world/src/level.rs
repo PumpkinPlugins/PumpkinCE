@@ -2,7 +2,7 @@ use dashmap::{DashMap, Entry};
 use log::trace;
 use num_traits::Zero;
 use pumpkin_config::{advanced_config, chunk::ChunkFormat};
-use pumpkin_data::{Block, block_properties::has_random_ticks};
+use pumpkin_data::{block_properties::has_random_ticks, Block, BlockStateId};
 use pumpkin_util::math::{position::BlockPos, vector2::Vector2};
 use rand::{Rng, SeedableRng, rngs::SmallRng};
 use rayon::{ThreadPool, ThreadPoolBuilder};
@@ -25,8 +25,7 @@ use tokio::{
 use tokio_util::task::TaskTracker;
 
 use crate::{
-    BlockStateId,
-    block::{RawBlockState, entities::BlockEntity},
+    block::entities::BlockEntity,
     chunk::{
         ChunkData, ChunkEntityData, ChunkParsingError, ChunkReadingError, ScheduledTick,
         TickPriority,
@@ -588,7 +587,7 @@ impl Level {
             .expect("Channel closed for unknown reason")
     }
 
-    pub async fn get_block_state(self: &Arc<Self>, position: &BlockPos) -> RawBlockState {
+    pub async fn get_block_state(self: &Arc<Self>, position: &BlockPos) -> BlockStateId {
         let (chunk_coordinate, relative) = position.chunk_and_chunk_relative_position();
         let chunk = self.get_chunk(chunk_coordinate).await;
 
@@ -598,10 +597,10 @@ impl Level {
             relative.y,
             relative.z as usize,
         ) else {
-            return RawBlockState(Block::AIR.default_state.id);
+            return BlockStateId::AIR;
         };
 
-        RawBlockState(id)
+        id
     }
 
     pub async fn set_block_state(

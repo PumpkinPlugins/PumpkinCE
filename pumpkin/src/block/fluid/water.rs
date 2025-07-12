@@ -4,7 +4,7 @@ use async_trait::async_trait;
 use pumpkin_data::fluid::Fluid;
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::BlockStateId;
+use pumpkin_data::BlockStateId;
 
 use crate::{block::pumpkin_fluid::PumpkinFluid, entity::EntityBase, world::World};
 

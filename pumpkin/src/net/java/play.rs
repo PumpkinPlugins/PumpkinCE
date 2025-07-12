@@ -1208,7 +1208,7 @@ impl JavaClientPlatform {
                     {
                         self.enqueue_packet(&CBlockUpdate::new(
                             position,
-                            VarInt(i32::from(state.id)),
+                            VarInt(i32::from(state.id.0)),
                         ))
                         .await;
                         self.update_sequence(player, player_action.sequence.0);

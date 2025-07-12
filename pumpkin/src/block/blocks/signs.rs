@@ -4,6 +4,7 @@ use async_trait::async_trait;
 use pumpkin_data::block_properties::BlockProperties;
 use pumpkin_data::tag::RegistryKey;
 use pumpkin_data::tag::get_tag_values;
+use pumpkin_data::BlockStateId;
 use pumpkin_world::block::entities::sign::SignBlockEntity;
 
 use crate::block::pumpkin_block::OnPlaceArgs;
@@ -29,7 +30,7 @@ impl BlockMetadata for SignBlock {
 
 #[async_trait]
 impl PumpkinBlock for SignBlock {
-    async fn on_place(&self, args: OnPlaceArgs<'_>) -> u16 {
+    async fn on_place(&self, args: OnPlaceArgs<'_>) -> BlockStateId {
         let mut sign_props = SignProperties::default(args.block);
         sign_props.waterlogged = args.replacing.water_source();
         sign_props.rotation = args.player.get_entity().get_flipped_rotation_16();

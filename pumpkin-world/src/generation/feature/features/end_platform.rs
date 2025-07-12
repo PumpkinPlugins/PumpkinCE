@@ -27,7 +27,7 @@ impl EndPlatformFeature {
                     } else {
                         Block::AIR.default_state
                     };
-                    if chunk.get_block_state(&pos.0).0 == state.id {
+                    if chunk.get_block_state(&pos.0) == state.id {
                         continue;
                     }
                     chunk.set_block_state(&pos.0, state);

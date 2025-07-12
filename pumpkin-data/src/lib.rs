@@ -151,5 +151,6 @@ pub use block_direction::FacingExt;
 pub use block_direction::HorizontalFacingExt;
 pub use block_state::BlockState;
 pub use block_state::BlockStateRef;
+pub use block_state::BlockStateId;
 pub use blocks::Block;
 pub use collision_shape::CollisionShape;

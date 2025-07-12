@@ -1,6 +1,5 @@
 use async_trait::async_trait;
-use pumpkin_data::{Block, BlockDirection};
-use pumpkin_world::BlockStateId;
+use pumpkin_data::{Block, BlockStateId, BlockDirection};
 
 use crate::block::pumpkin_block::{
     BlockMetadata, CanPlaceAtArgs, CanUpdateAtArgs, GetStateForNeighborUpdateArgs, OnPlaceArgs,

@@ -11,6 +11,7 @@ use async_trait::async_trait;
 use pumpkin_data::entity::EntityType;
 use pumpkin_data::item::Item;
 use pumpkin_data::sound::SoundCategory;
+use pumpkin_data::BlockStateId;
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::position::BlockPos;
 use pumpkin_util::math::vector3::Vector3;
@@ -43,7 +44,7 @@ impl TNTBlock {
             )
             .await;
         world
-            .set_block_state(location, 0, BlockFlags::NOTIFY_ALL)
+            .set_block_state(location, BlockStateId::AIR, BlockFlags::NOTIFY_ALL)
             .await;
     }
 }

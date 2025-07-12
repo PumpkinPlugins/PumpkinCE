@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use pumpkin_data::{
-    Block, BlockDirection, BlockState, HorizontalFacingExt,
+    Block, BlockDirection, BlockState, BlockStateId, HorizontalFacingExt,
     block_properties::{
         BlockProperties, ComparatorLikeProperties, EnumVariants, HorizontalFacing,
         RedstoneWireLikeProperties, RepeaterLikeProperties, get_state_by_state_id,
@@ -10,7 +10,6 @@ use pumpkin_data::{
 };
 use pumpkin_util::math::position::BlockPos;
 use pumpkin_world::{
-    BlockStateId,
     chunk::TickPriority,
     world::{BlockAccessor, BlockFlags},
 };

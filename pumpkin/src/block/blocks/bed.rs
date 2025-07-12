@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use pumpkin_data::Block;
+use pumpkin_data::BlockStateId;
 use pumpkin_data::block_properties::BedPart;
 use pumpkin_data::block_properties::BlockProperties;
 use pumpkin_data::entity::EntityType;
@@ -10,7 +11,6 @@ use pumpkin_registry::VanillaDimensionType;
 use pumpkin_util::GameMode;
 use pumpkin_util::math::position::BlockPos;
 use pumpkin_util::text::TextComponent;
-use pumpkin_world::BlockStateId;
 use pumpkin_world::block::entities::bed::BedBlockEntity;
 use pumpkin_world::world::BlockFlags;
 
@@ -289,7 +289,7 @@ impl BedBlock {
         world: &Arc<World>,
         block: &Block,
         block_pos: &BlockPos,
-        state_id: u16,
+        state_id: BlockStateId,
     ) {
         let mut bed_props = BedProperties::from_state_id(state_id, block);
         bed_props.occupied = occupied;

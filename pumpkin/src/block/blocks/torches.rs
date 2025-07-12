@@ -5,7 +5,7 @@ use pumpkin_data::BlockDirection;
 use pumpkin_data::block_properties::{BlockProperties, Facing};
 use pumpkin_data::{Block, FacingExt, HorizontalFacingExt};
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::BlockStateId;
+use pumpkin_data::BlockStateId;
 use pumpkin_world::world::BlockAccessor;
 
 type WallTorchProps = pumpkin_data::block_properties::WallTorchLikeProperties;
@@ -85,7 +85,7 @@ impl PumpkinBlock for TorchBlock {
         if support_block.is_center_solid(BlockDirection::Up) {
             args.block.default_state.id
         } else {
-            0
+            BlockStateId::AIR
         }
     }
 
@@ -114,12 +114,12 @@ impl PumpkinBlock for TorchBlock {
             if props.facing.to_block_direction().opposite() == args.direction
                 && !can_place_at(args.world, args.position, props.facing.to_block_direction()).await
             {
-                return 0;
+                return BlockStateId::AIR;
             }
         } else if args.direction == BlockDirection::Down {
             let support_block = args.world.get_block_state(&args.position.down()).await;
             if !support_block.is_center_solid(BlockDirection::Up) {
-                return 0;
+                return BlockStateId::AIR;
             }
         }
         args.state_id

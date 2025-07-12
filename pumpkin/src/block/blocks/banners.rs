@@ -3,7 +3,7 @@ use crate::entity::EntityBase;
 use async_trait::async_trait;
 use pumpkin_data::block_properties::{BlockProperties, WhiteBannerLikeProperties};
 use pumpkin_data::tag::{RegistryKey, get_tag_values};
-use pumpkin_world::BlockStateId;
+use pumpkin_data::BlockStateId;
 
 pub struct BannerBlock;
 

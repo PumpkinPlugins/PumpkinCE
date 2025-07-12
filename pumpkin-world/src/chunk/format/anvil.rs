@@ -823,7 +823,7 @@ impl<S: SingleChunkDataSerializer> ChunkSerializer for AnvilChunkFile<S> {
 mod tests {
     use async_trait::async_trait;
     use pumpkin_config::{AdvancedConfiguration, advanced_config, override_config_for_testing};
-    use pumpkin_data::BlockDirection;
+    use pumpkin_data::{BlockDirection, BlockStateId};
     use pumpkin_util::math::position::BlockPos;
     use pumpkin_util::math::vector2::Vector2;
     use std::fs;
@@ -980,7 +980,7 @@ mod tests {
                         .enumerate()
                         .for_each(|(i, (o, r))| {
                             if o != r {
-                                panic!("Data miss-match expected {o}, got {r} ({i})");
+                                panic!("Data mismatch: expected {o}, got {r} ({i})");
                             }
                         });
 
@@ -993,7 +993,7 @@ mod tests {
                         .enumerate()
                         .for_each(|(i, (o, r))| {
                             if o != r {
-                                panic!("Data miss-match expected {o}, got {r} ({i})");
+                                panic!("Data mismatch: expected {o}, got {r} ({i})");
                             }
                         });
                     break;
@@ -1005,12 +1005,12 @@ mod tests {
 
         // Idk what blocks these are, they just have to be different
         let mut chunk = chunks.first().unwrap().1.write().await;
-        chunk.section.set_relative_block(0, 0, 0, 1000);
+        chunk.section.set_relative_block(0, 0, 0, BlockStateId(1000));
         // Mark dirty so we actually write it
         chunk.dirty = true;
         drop(chunk);
         let mut chunk = chunks.last().unwrap().1.write().await;
-        chunk.section.set_relative_block(0, 0, 0, 1000);
+        chunk.section.set_relative_block(0, 0, 0, BlockStateId(1000));
         // Mark dirty so we actually write it
         chunk.dirty = true;
         drop(chunk);
@@ -1068,7 +1068,7 @@ mod tests {
             for z in 0..16 {
                 for y in 0..4 {
                     let block_id = 16 * 16 * y + 16 * z + x;
-                    chunk.section.set_relative_block(x, y, z, block_id as u16);
+                    chunk.section.set_relative_block(x, y, z, BlockStateId(block_id as u16));
                 }
             }
         }
@@ -1080,7 +1080,7 @@ mod tests {
             for z in 0..16 {
                 for y in 0..4 {
                     let block_id = 16 * 16 * y + 16 * z + x;
-                    chunk.section.set_relative_block(x, y, z, block_id as u16);
+                    chunk.section.set_relative_block(x, y, z, BlockStateId(block_id as u16));
                 }
             }
         }
@@ -1141,7 +1141,7 @@ mod tests {
             for z in 0..16 {
                 for y in 0..16 {
                     let block_id = 16 * 16 * y + 16 * z + x;
-                    chunk.section.set_relative_block(x, y, z, block_id as u16);
+                    chunk.section.set_relative_block(x, y, z, BlockStateId(block_id as u16));
                 }
             }
         }

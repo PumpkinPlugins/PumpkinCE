@@ -5,7 +5,7 @@ use crate::server::Server;
 use crate::world::World;
 use pumpkin_data::fluid::Fluid;
 use pumpkin_data::item::Item;
-use pumpkin_data::{Block, BlockDirection};
+use pumpkin_data::{Block, BlockDirection, BlockStateId};
 use pumpkin_util::math::position::BlockPos;
 use std::collections::HashMap;
 use std::sync::Arc;
@@ -22,7 +22,7 @@ impl Ignition {
         block: &Block,
         _server: &Server,
     ) where
-        F: FnOnce(Arc<World>, BlockPos, u16) -> Fut,
+        F: FnOnce(Arc<World>, BlockPos, BlockStateId) -> Fut,
         Fut: Future<Output = ()>,
     {
         let world = player.world().await;
@@ -49,7 +49,7 @@ impl Ignition {
     }
 }
 
-fn can_be_lit(block: &Block, state_id: u16) -> Option<u16> {
+fn can_be_lit(block: &Block, state_id: BlockStateId) -> Option<BlockStateId> {
     let mut props = match &block.properties(state_id) {
         Some(props) => props.to_props(),
         None => return None,
