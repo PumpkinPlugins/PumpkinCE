@@ -1533,7 +1533,7 @@ impl JavaClientPlatform {
             return result;
         }
 
-        if matches!(result, BlockActionResult::TryWithEmptyHand) {
+        if matches!(result, BlockActionResult::PassToDefaultBlockAction) {
             let result = server
                 .block_registry
                 .on_use(

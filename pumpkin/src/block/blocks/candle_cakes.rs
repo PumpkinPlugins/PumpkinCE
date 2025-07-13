@@ -115,7 +115,7 @@ impl PumpkinBlock for CandleCakeBlock {
             id if id == Item::FIRE_CHARGE.id || id == Item::FLINT_AND_STEEL.id => {
                 BlockActionResult::Pass
             } // Item::FIRE_CHARGE | Item::FLINT_AND_STEEL
-            _ => BlockActionResult::TryWithEmptyHand,
+            _ => BlockActionResult::PassToDefaultBlockAction,
         }
     }
 

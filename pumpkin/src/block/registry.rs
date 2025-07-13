@@ -29,7 +29,7 @@ use super::pumpkin_block::{
 };
 use super::pumpkin_fluid::PumpkinFluid;
 
-// InteractionResult.java
+// ActionResult.java
 pub enum BlockActionResult {
     /// Action was successful | Same as SUCCESS in vanilla
     Success,
@@ -41,8 +41,8 @@ pub enum BlockActionResult {
     Fail,
     /// Allow other actions to be executed | Same as PASS in vanilla
     Pass,
-    /// Use default action for the block: `normal_use` | Same as `TRY_WITH_EMPTY_HAND` in vanilla
-    TryWithEmptyHand,
+    /// Use default action for the block: `normal_use` | Same as `PASS_TO_DEFAULT_BLOCK_ACTION` in vanilla
+    PassToDefaultBlockAction,
 }
 
 impl BlockActionResult {

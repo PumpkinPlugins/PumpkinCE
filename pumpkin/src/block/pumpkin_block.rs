@@ -34,7 +34,7 @@ pub trait PumpkinBlock: Send + Sync {
     }
 
     async fn use_with_item(&self, _args: UseWithItemArgs<'_>) -> BlockActionResult {
-        BlockActionResult::TryWithEmptyHand
+        BlockActionResult::PassToDefaultBlockAction
     }
 
     async fn on_entity_collision(&self, _args: OnEntityCollisionArgs<'_>) {}

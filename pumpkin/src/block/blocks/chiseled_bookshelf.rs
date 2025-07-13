@@ -84,11 +84,11 @@ impl PumpkinBlock for ChiseledBookshelfBlock {
             .is_tagged_with("minecraft:bookshelf_books")
             .unwrap_or(false)
         {
-            return BlockActionResult::TryWithEmptyHand;
+            return BlockActionResult::PassToDefaultBlockAction;
         }
         if let Some(slot) = Self::get_slot_for_hit(args.hit, properties.facing) {
             if Self::is_slot_used(properties, slot) {
-                return BlockActionResult::TryWithEmptyHand;
+                return BlockActionResult::PassToDefaultBlockAction;
             } else if let Some(block_entity) = args.world.get_block_entity(args.position).await {
                 if let Some(block_entity) = block_entity
                     .as_any()
