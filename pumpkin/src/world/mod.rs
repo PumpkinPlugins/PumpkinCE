@@ -1983,7 +1983,7 @@ impl World {
                 let particles_packet = CWorldEvent::new(
                     WorldEvent::BlockBroken as i32,
                     *position,
-                    broken_state_id.0 as i32,
+                    i32::from(broken_state_id.0),
                     false,
                 );
                 match cause {
