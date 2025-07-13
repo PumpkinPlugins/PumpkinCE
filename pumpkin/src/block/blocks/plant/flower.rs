@@ -1,6 +1,6 @@
 use async_trait::async_trait;
-use pumpkin_data::{Block, BlockStateId};
 use pumpkin_data::tag::{RegistryKey, get_tag_values};
+use pumpkin_data::{Block, BlockStateId};
 use pumpkin_registry::VanillaDimensionType;
 use pumpkin_world::world::BlockFlags;
 

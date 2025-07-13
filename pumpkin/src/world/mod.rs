@@ -35,7 +35,6 @@ use border::Worldborder;
 use bytes::BufMut;
 use explosion::Explosion;
 use pumpkin_config::BasicConfiguration;
-use pumpkin_data::BlockDirection;
 use pumpkin_data::entity::EffectType;
 use pumpkin_data::fluid::{Falling, FluidProperties};
 use pumpkin_data::{
@@ -49,6 +48,7 @@ use pumpkin_data::{
     sound::{Sound, SoundCategory},
     world::{RAW, WorldEvent},
 };
+use pumpkin_data::{BlockDirection, BlockId};
 use pumpkin_inventory::{equipment_slot::EquipmentSlot, screen_handler::InventoryPlayer};
 use pumpkin_macros::send_cancellable;
 use pumpkin_nbt::{compound::NbtCompound, to_bytes_unnamed};
@@ -317,7 +317,7 @@ impl World {
                 event.pos,
                 event.r#type,
                 event.data,
-                VarInt(i32::from(block.id)),
+                VarInt(i32::from(block.id.0)),
             ))
             .await;
         }
@@ -1923,7 +1923,8 @@ impl World {
         chunk.schedule_block_tick(block.id, block_pos, delay, priority);
     }
 
-    pub async fn schedule_fluid_tick(&self, block_id: u16, block_pos: BlockPos, delay: u16) {
+    // TODO: don't use block_id?
+    pub async fn schedule_fluid_tick(&self, block_id: BlockId, block_pos: BlockPos, delay: u16) {
         let chunk = self
             .level
             .get_chunk(block_pos.chunk_and_chunk_relative_position().0)

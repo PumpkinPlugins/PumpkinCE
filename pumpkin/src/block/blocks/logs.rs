@@ -1,8 +1,8 @@
 use async_trait::async_trait;
+use pumpkin_data::BlockStateId;
 use pumpkin_data::block_properties::BlockProperties;
 use pumpkin_data::tag::RegistryKey;
 use pumpkin_data::tag::get_tag_values;
-use pumpkin_data::BlockStateId;
 
 use crate::block::pumpkin_block::OnPlaceArgs;
 use crate::block::pumpkin_block::{BlockMetadata, PumpkinBlock};

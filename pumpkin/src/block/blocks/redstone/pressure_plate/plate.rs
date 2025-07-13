@@ -100,12 +100,7 @@ impl PressurePlate for PressurePlateBlock {
         0
     }
 
-    fn set_redstone_output(
-        &self,
-        block: &Block,
-        state: &BlockState,
-        output: u8,
-    ) -> BlockStateId {
+    fn set_redstone_output(&self, block: &Block, state: &BlockState, output: u8) -> BlockStateId {
         let mut props = PressurePlateProps::from_state_id(state.id, block);
         props.powered = output > 0;
         props.to_state_id(block)

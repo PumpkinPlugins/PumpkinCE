@@ -11,7 +11,7 @@ use pumpkin_data::block_properties::{BlockProperties, Integer1To4};
 use pumpkin_data::entity::EntityPose;
 use pumpkin_data::item::Item;
 use pumpkin_data::tag::Tagable;
-use pumpkin_data::{Block, BlockStateId, BlockDirection};
+use pumpkin_data::{Block, BlockDirection, BlockStateId};
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::position::BlockPos;
 use pumpkin_world::world::BlockFlags;

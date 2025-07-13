@@ -2,7 +2,10 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use pumpkin_data::{
-    block_properties::{BlockProperties, CakeLikeProperties, EnumVariants, Integer0To6}, item::Item, sound::{Sound, SoundCategory}, Block, BlockStateId
+    Block, BlockStateId,
+    block_properties::{BlockProperties, CakeLikeProperties, EnumVariants, Integer0To6},
+    item::Item,
+    sound::{Sound, SoundCategory},
 };
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::{GameMode, math::position::BlockPos};

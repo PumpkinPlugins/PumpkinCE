@@ -1,4 +1,5 @@
 use async_trait::async_trait;
+use pumpkin_data::BlockId;
 use pumpkin_data::tag::{RegistryKey, get_tag_values};
 use pumpkin_data::{Block, block_properties::get_block};
 use pumpkin_protocol::java::client::play::{ArgumentType, CommandSuggestion, SuggestionProviders};
@@ -87,8 +88,8 @@ impl<'a> FindArg<'a> for BlockArgumentConsumer {
 pub struct BlockPredicateArgumentConsumer;
 #[derive(Debug)]
 pub enum BlockPredicate {
-    Tag(Vec<u16>),
-    Block(u16),
+    Tag(Vec<BlockId>),
+    Block(BlockId),
 }
 
 impl GetClientSideArgParser for BlockPredicateArgumentConsumer {

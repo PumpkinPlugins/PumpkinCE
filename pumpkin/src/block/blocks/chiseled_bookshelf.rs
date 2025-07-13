@@ -2,18 +2,18 @@ use std::sync::{Arc, atomic::Ordering};
 
 use async_trait::async_trait;
 use pumpkin_data::{
+    BlockStateId,
     block_properties::{BlockProperties, ChiseledBookshelfLikeProperties, HorizontalFacing},
     item::Item,
     sound::{Sound, SoundCategory},
     tag::Tagable,
-    BlockStateId,
 };
 use pumpkin_inventory::screen_handler::InventoryPlayer;
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::{position::BlockPos, vector2::Vector2};
 use pumpkin_world::{
-    block::entities::chiseled_bookshelf::ChiseledBookshelfBlockEntity,
-    inventory::Inventory, item::ItemStack,
+    block::entities::chiseled_bookshelf::ChiseledBookshelfBlockEntity, inventory::Inventory,
+    item::ItemStack,
 };
 use tokio::sync::Mutex;
 

@@ -1,9 +1,9 @@
 use crate::block::blocks::redstone::block_receives_redstone_power;
 use crate::block::pumpkin_block::{BlockMetadata, OnNeighborUpdateArgs, OnPlaceArgs, PumpkinBlock};
 use async_trait::async_trait;
+use pumpkin_data::BlockStateId;
 use pumpkin_data::block_properties::BlockProperties;
 use pumpkin_data::sound::{Sound, SoundCategory};
-use pumpkin_data::BlockStateId;
 use pumpkin_world::world::BlockFlags;
 
 type CopperBulbLikeProperties = pumpkin_data::block_properties::CopperBulbLikeProperties;

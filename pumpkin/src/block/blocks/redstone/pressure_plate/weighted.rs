@@ -108,12 +108,7 @@ impl PressurePlate for WeightedPressurePlateBlock {
         0
     }
 
-    fn set_redstone_output(
-        &self,
-        block: &Block,
-        state: &BlockState,
-        output: u8,
-    ) -> BlockStateId {
+    fn set_redstone_output(&self, block: &Block, state: &BlockState, output: u8) -> BlockStateId {
         let mut props = PressurePlateProps::from_state_id(state.id, block);
         props.power = Integer0To15::from_index(u16::from(output));
         props.to_state_id(block)

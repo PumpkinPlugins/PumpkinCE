@@ -1,8 +1,8 @@
 use async_trait::async_trait;
 use pumpkin_data::Block;
+use pumpkin_data::BlockStateId;
 use pumpkin_data::tag::Tagable;
 use pumpkin_macros::pumpkin_block;
-use pumpkin_data::BlockStateId;
 
 use crate::block::pumpkin_block::{
     BrokenArgs, CanPlaceAtArgs, GetStateForNeighborUpdateArgs, PumpkinBlock,

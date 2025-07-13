@@ -1,7 +1,7 @@
 use crate::block::pumpkin_block::{OnNeighborUpdateArgs, OnPlaceArgs, OnScheduledTickArgs};
 use async_trait::async_trait;
-use pumpkin_data::block_properties::BlockProperties;
 use pumpkin_data::BlockStateId;
+use pumpkin_data::block_properties::BlockProperties;
 use pumpkin_macros::pumpkin_block;
 use pumpkin_world::{chunk::TickPriority, world::BlockFlags};
 

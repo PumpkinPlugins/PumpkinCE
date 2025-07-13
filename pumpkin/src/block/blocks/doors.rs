@@ -1,5 +1,4 @@
 use async_trait::async_trait;
-use pumpkin_data::{Block, BlockStateId};
 use pumpkin_data::BlockDirection;
 use pumpkin_data::HorizontalFacingExt;
 use pumpkin_data::block_properties::Axis;
@@ -12,6 +11,7 @@ use pumpkin_data::sound::SoundCategory;
 use pumpkin_data::tag::RegistryKey;
 use pumpkin_data::tag::Tagable;
 use pumpkin_data::tag::get_tag_values;
+use pumpkin_data::{Block, BlockStateId};
 use pumpkin_util::math::position::BlockPos;
 use pumpkin_world::world::BlockAccessor;
 use pumpkin_world::world::BlockFlags;

@@ -1005,12 +1005,16 @@ mod tests {
 
         // Idk what blocks these are, they just have to be different
         let mut chunk = chunks.first().unwrap().1.write().await;
-        chunk.section.set_relative_block(0, 0, 0, BlockStateId(1000));
+        chunk
+            .section
+            .set_relative_block(0, 0, 0, BlockStateId(1000));
         // Mark dirty so we actually write it
         chunk.dirty = true;
         drop(chunk);
         let mut chunk = chunks.last().unwrap().1.write().await;
-        chunk.section.set_relative_block(0, 0, 0, BlockStateId(1000));
+        chunk
+            .section
+            .set_relative_block(0, 0, 0, BlockStateId(1000));
         // Mark dirty so we actually write it
         chunk.dirty = true;
         drop(chunk);
@@ -1068,7 +1072,9 @@ mod tests {
             for z in 0..16 {
                 for y in 0..4 {
                     let block_id = 16 * 16 * y + 16 * z + x;
-                    chunk.section.set_relative_block(x, y, z, BlockStateId(block_id as u16));
+                    chunk
+                        .section
+                        .set_relative_block(x, y, z, BlockStateId(block_id as u16));
                 }
             }
         }
@@ -1080,7 +1086,9 @@ mod tests {
             for z in 0..16 {
                 for y in 0..4 {
                     let block_id = 16 * 16 * y + 16 * z + x;
-                    chunk.section.set_relative_block(x, y, z, BlockStateId(block_id as u16));
+                    chunk
+                        .section
+                        .set_relative_block(x, y, z, BlockStateId(block_id as u16));
                 }
             }
         }
@@ -1141,7 +1149,9 @@ mod tests {
             for z in 0..16 {
                 for y in 0..16 {
                     let block_id = 16 * 16 * y + 16 * z + x;
-                    chunk.section.set_relative_block(x, y, z, BlockStateId(block_id as u16));
+                    chunk
+                        .section
+                        .set_relative_block(x, y, z, BlockStateId(block_id as u16));
                 }
             }
         }

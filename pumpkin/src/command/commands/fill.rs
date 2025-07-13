@@ -187,7 +187,11 @@ impl CommandExecutor for Executor {
                                     .await;
                             } else {
                                 world
-                                    .set_block_state(&block_position, BlockStateId::AIR, BlockFlags::FORCE_STATE)
+                                    .set_block_state(
+                                        &block_position,
+                                        BlockStateId::AIR,
+                                        BlockFlags::FORCE_STATE,
+                                    )
                                     .await;
                             }
                             placed_blocks += 1;

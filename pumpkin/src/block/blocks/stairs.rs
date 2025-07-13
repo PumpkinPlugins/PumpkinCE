@@ -1,5 +1,6 @@
 use async_trait::async_trait;
 use pumpkin_data::BlockDirection;
+use pumpkin_data::BlockStateId;
 use pumpkin_data::block_properties::BlockHalf;
 use pumpkin_data::block_properties::BlockProperties;
 use pumpkin_data::block_properties::HorizontalFacing;
@@ -8,7 +9,6 @@ use pumpkin_data::tag::RegistryKey;
 use pumpkin_data::tag::Tagable;
 use pumpkin_data::tag::get_tag_values;
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_data::BlockStateId;
 use pumpkin_world::world::BlockFlags;
 
 use crate::block::pumpkin_block::OnNeighborUpdateArgs;

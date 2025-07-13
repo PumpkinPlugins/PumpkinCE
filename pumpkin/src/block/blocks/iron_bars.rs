@@ -1,10 +1,10 @@
 use crate::block::pumpkin_block::GetStateForNeighborUpdateArgs;
 use crate::block::pumpkin_block::OnPlaceArgs;
 use async_trait::async_trait;
-use pumpkin_data::{Block, BlockStateId};
 use pumpkin_data::BlockDirection;
 use pumpkin_data::block_properties::BlockProperties;
 use pumpkin_data::tag::Tagable;
+use pumpkin_data::{Block, BlockStateId};
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::position::BlockPos;
 

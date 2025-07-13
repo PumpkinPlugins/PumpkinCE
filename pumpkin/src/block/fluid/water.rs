@@ -1,10 +1,11 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
+use pumpkin_data::BlockId;
+use pumpkin_data::BlockStateId;
 use pumpkin_data::fluid::Fluid;
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_data::BlockStateId;
 
 use crate::{block::pumpkin_fluid::PumpkinFluid, entity::EntityBase, world::World};
 
@@ -28,7 +29,8 @@ impl PumpkinFluid for FlowingWater {
     ) {
         if old_state_id != state_id {
             world
-                .schedule_fluid_tick(fluid.id, *block_pos, WATER_FLOW_SPEED)
+                // FIXME: fluid ID used as block ID. see callee
+                .schedule_fluid_tick(BlockId(fluid.id), *block_pos, WATER_FLOW_SPEED)
                 .await;
         }
     }
@@ -45,7 +47,8 @@ impl PumpkinFluid for FlowingWater {
         _notify: bool,
     ) {
         world
-            .schedule_fluid_tick(fluid.id, *block_pos, WATER_FLOW_SPEED)
+            // FIXME: fluid ID used as block ID. see callee
+            .schedule_fluid_tick(BlockId(fluid.id), *block_pos, WATER_FLOW_SPEED)
             .await;
     }
 

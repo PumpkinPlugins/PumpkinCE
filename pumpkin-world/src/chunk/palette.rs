@@ -4,7 +4,7 @@ use std::{
     hash::Hash,
 };
 
-use pumpkin_data::{block_properties::get_state_by_state_id, chunk::Biome, Block, BlockStateId};
+use pumpkin_data::{Block, BlockStateId, block_properties::get_state_by_state_id, chunk::Biome};
 use pumpkin_util::encompassing_bits;
 
 use crate::block::BlockStateCodec;

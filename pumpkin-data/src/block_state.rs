@@ -168,6 +168,7 @@ impl std::fmt::Display for BlockStateId {
 }
 
 impl BlockStateId {
+    // TODO: Are we sure that this is always 0?
     pub const AIR: BlockStateId = BlockStateId(0);
 
     /// Get a Block from the Vanilla Block registry at Runtime

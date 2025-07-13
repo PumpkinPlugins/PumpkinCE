@@ -1,6 +1,6 @@
 use async_trait::async_trait;
-use pumpkin_macros::pumpkin_block;
 use pumpkin_data::BlockStateId;
+use pumpkin_macros::pumpkin_block;
 
 use crate::block::blocks::plant::PlantBlockBase;
 use crate::block::blocks::plant::crop::CropBlockBase;

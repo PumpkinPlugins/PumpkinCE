@@ -651,29 +651,27 @@ pub trait AquiferSamplerImpl {
 mod test {
     use std::{mem, sync::LazyLock};
 
-    use pumpkin_data::{noise_router::OVERWORLD_BASE_NOISE_ROUTER, BlockStateId};
+    use pumpkin_data::{BlockStateId, noise_router::OVERWORLD_BASE_NOISE_ROUTER};
     use pumpkin_util::math::vector2::Vector2;
 
-    use crate::{
-        generation::{
-            GlobalRandomConfig, biome_coords,
-            chunk_noise::{
-                BlockStateSampler, ChainedBlockStateSampler, ChunkNoiseGenerator, LAVA_BLOCK,
-                WATER_BLOCK,
-            },
-            noise_router::{
-                chunk_density_function::{ChunkNoiseFunctionSampleOptions, SampleAction},
-                chunk_noise_router::ChunkNoiseRouter,
-                density_function::UnblendedNoisePos,
-                proto_noise_router::ProtoNoiseRouters,
-                surface_height_sampler::{
-                    SurfaceHeightEstimateSampler, SurfaceHeightSamplerBuilderOptions,
-                },
-            },
-            positions::chunk_pos,
-            proto_chunk::StandardChunkFluidLevelSampler,
-            settings::{GENERATION_SETTINGS, GeneratorSetting},
+    use crate::generation::{
+        GlobalRandomConfig, biome_coords,
+        chunk_noise::{
+            BlockStateSampler, ChainedBlockStateSampler, ChunkNoiseGenerator, LAVA_BLOCK,
+            WATER_BLOCK,
         },
+        noise_router::{
+            chunk_density_function::{ChunkNoiseFunctionSampleOptions, SampleAction},
+            chunk_noise_router::ChunkNoiseRouter,
+            density_function::UnblendedNoisePos,
+            proto_noise_router::ProtoNoiseRouters,
+            surface_height_sampler::{
+                SurfaceHeightEstimateSampler, SurfaceHeightSamplerBuilderOptions,
+            },
+        },
+        positions::chunk_pos,
+        proto_chunk::StandardChunkFluidLevelSampler,
+        settings::{GENERATION_SETTINGS, GeneratorSetting},
     };
 
     use super::{AquiferSampler, FluidLevel, FluidLevelSampler, WorldAquiferSampler};
@@ -1654,45 +1652,18 @@ mod test {
             ((112, 60, 70, 0.1782686032102433), None),
             ((112, 60, 72, 0.18822148746793055), None),
             ((112, 60, 74, 0.20387997189913717), None),
-            (
-                (112, 80, 64, -0.28931054817132484),
-                Some(BlockStateId::AIR),
-            ),
+            ((112, 80, 64, -0.28931054817132484), Some(BlockStateId::AIR)),
             ((112, 80, 66, -0.2808098154769529), Some(BlockStateId::AIR)),
             ((112, 80, 68, -0.2806908647477032), Some(BlockStateId::AIR)),
-            (
-                (112, 80, 70, -0.28068300576359284),
-                Some(BlockStateId::AIR),
-            ),
+            ((112, 80, 70, -0.28068300576359284), Some(BlockStateId::AIR)),
             ((112, 80, 72, -0.2805878392398348), Some(BlockStateId::AIR)),
-            (
-                (112, 80, 74, -0.27824504138444317),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (112, 100, 64, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (112, 100, 66, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (112, 100, 68, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (112, 100, 70, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (112, 100, 72, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (112, 100, 74, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
+            ((112, 80, 74, -0.27824504138444317), Some(BlockStateId::AIR)),
+            ((112, 100, 64, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((112, 100, 66, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((112, 100, 68, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((112, 100, 70, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((112, 100, 72, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((112, 100, 74, -0.4583333333333333), Some(BlockStateId::AIR)),
             ((114, -100, 64, 0.037482421875), None),
             ((114, -100, 66, 0.037482421875), None),
             ((114, -100, 68, 0.037482421875), None),
@@ -1757,35 +1728,14 @@ mod test {
             ((114, 80, 66, -0.3092766951165722), Some(BlockStateId::AIR)),
             ((114, 80, 68, -0.3063751991759311), Some(BlockStateId::AIR)),
             ((114, 80, 70, -0.3004342091280733), Some(BlockStateId::AIR)),
-            (
-                (114, 80, 72, -0.29703745590700253),
-                Some(BlockStateId::AIR),
-            ),
+            ((114, 80, 72, -0.29703745590700253), Some(BlockStateId::AIR)),
             ((114, 80, 74, -0.2920638815250855), Some(BlockStateId::AIR)),
-            (
-                (114, 100, 64, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (114, 100, 66, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (114, 100, 68, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (114, 100, 70, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (114, 100, 72, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (114, 100, 74, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
+            ((114, 100, 64, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((114, 100, 66, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((114, 100, 68, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((114, 100, 70, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((114, 100, 72, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((114, 100, 74, -0.4583333333333333), Some(BlockStateId::AIR)),
             ((116, -100, 64, 0.037482421875), None),
             ((116, -100, 66, 0.037482421875), None),
             ((116, -100, 68, 0.037482421875), None),
@@ -1856,44 +1806,17 @@ mod test {
             ((116, 60, 72, 0.06694547220363958), None),
             ((116, 60, 74, 0.08711813973093903), None),
             ((116, 80, 64, -0.3326652310213258), Some(BlockStateId::AIR)),
-            (
-                (116, 80, 66, -0.32962834810938174),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (116, 80, 68, -0.32236370014057947),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (116, 80, 70, -0.31670491006554574),
-                Some(BlockStateId::AIR),
-            ),
+            ((116, 80, 66, -0.32962834810938174), Some(BlockStateId::AIR)),
+            ((116, 80, 68, -0.32236370014057947), Some(BlockStateId::AIR)),
+            ((116, 80, 70, -0.31670491006554574), Some(BlockStateId::AIR)),
             ((116, 80, 72, -0.3130639601887072), Some(BlockStateId::AIR)),
             ((116, 80, 74, -0.3124769234268471), Some(BlockStateId::AIR)),
-            (
-                (116, 100, 64, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (116, 100, 66, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (116, 100, 68, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (116, 100, 70, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (116, 100, 72, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (116, 100, 74, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
+            ((116, 100, 64, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((116, 100, 66, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((116, 100, 68, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((116, 100, 70, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((116, 100, 72, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((116, 100, 74, -0.4583333333333333), Some(BlockStateId::AIR)),
             ((118, -100, 64, 0.037482421875), None),
             ((118, -100, 66, 0.037482421875), None),
             ((118, -100, 68, 0.037482421875), None),
@@ -1953,10 +1876,7 @@ mod test {
                 (118, 40, 66, -0.016656636719901533),
                 Some(BlockStateId::AIR),
             ),
-            (
-                (118, 40, 68, -0.01330299024830442),
-                Some(BlockStateId::AIR),
-            ),
+            ((118, 40, 68, -0.01330299024830442), Some(BlockStateId::AIR)),
             (
                 (118, 40, 70, -0.009864486324034218),
                 Some(BlockStateId::AIR),
@@ -1976,47 +1896,17 @@ mod test {
             ((118, 60, 72, 0.01001192490238903), None),
             ((118, 60, 74, 0.0075500927486281426), None),
             ((118, 80, 64, -0.3462118919745469), Some(BlockStateId::AIR)),
-            (
-                (118, 80, 66, -0.34419241078645835),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (118, 80, 68, -0.33580861045450133),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (118, 80, 70, -0.33008534054566163),
-                Some(BlockStateId::AIR),
-            ),
+            ((118, 80, 66, -0.34419241078645835), Some(BlockStateId::AIR)),
+            ((118, 80, 68, -0.33580861045450133), Some(BlockStateId::AIR)),
+            ((118, 80, 70, -0.33008534054566163), Some(BlockStateId::AIR)),
             ((118, 80, 72, -0.333649815109498), Some(BlockStateId::AIR)),
-            (
-                (118, 80, 74, -0.33771329428807284),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (118, 100, 64, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (118, 100, 66, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (118, 100, 68, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (118, 100, 70, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (118, 100, 72, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (118, 100, 74, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
+            ((118, 80, 74, -0.33771329428807284), Some(BlockStateId::AIR)),
+            ((118, 100, 64, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((118, 100, 66, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((118, 100, 68, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((118, 100, 70, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((118, 100, 72, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((118, 100, 74, -0.4583333333333333), Some(BlockStateId::AIR)),
             ((120, -100, 64, 0.037482421875), None),
             ((120, -100, 66, 0.037482421875), None),
             ((120, -100, 68, 0.037482421875), None),
@@ -2084,10 +1974,7 @@ mod test {
                 (120, 40, 70, -0.020228945291907708),
                 Some(BlockStateId::AIR),
             ),
-            (
-                (120, 40, 72, -0.01664436674077766),
-                Some(BlockStateId::AIR),
-            ),
+            ((120, 40, 72, -0.01664436674077766), Some(BlockStateId::AIR)),
             (
                 (120, 40, 74, -0.013001583733654043),
                 Some(BlockStateId::AIR),
@@ -2119,39 +2006,15 @@ mod test {
             ((120, 80, 64, -0.3611328625547435), Some(BlockStateId::AIR)),
             ((120, 80, 66, -0.3586517592327399), Some(BlockStateId::AIR)),
             ((120, 80, 68, -0.3524534485283812), Some(BlockStateId::AIR)),
-            (
-                (120, 80, 70, -0.35323218454039057),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (120, 80, 72, -0.36213549677301105),
-                Some(BlockStateId::AIR),
-            ),
+            ((120, 80, 70, -0.35323218454039057), Some(BlockStateId::AIR)),
+            ((120, 80, 72, -0.36213549677301105), Some(BlockStateId::AIR)),
             ((120, 80, 74, -0.3684474143996314), Some(BlockStateId::AIR)),
-            (
-                (120, 100, 64, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (120, 100, 66, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (120, 100, 68, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (120, 100, 70, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (120, 100, 72, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (120, 100, 74, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
+            ((120, 100, 64, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((120, 100, 66, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((120, 100, 68, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((120, 100, 70, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((120, 100, 72, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((120, 100, 74, -0.4583333333333333), Some(BlockStateId::AIR)),
             ((122, -100, 64, 0.037482421875), None),
             ((122, -100, 66, 0.037482421875), None),
             ((122, -100, 68, 0.037482421875), None),
@@ -2214,18 +2077,12 @@ mod test {
                 (122, 40, 66, -0.016896390550754353),
                 Some(BlockStateId::AIR),
             ),
-            (
-                (122, 40, 68, -0.01994683889106233),
-                Some(BlockStateId::AIR),
-            ),
+            ((122, 40, 68, -0.01994683889106233), Some(BlockStateId::AIR)),
             (
                 (122, 40, 70, -0.022658183924480487),
                 Some(BlockStateId::AIR),
             ),
-            (
-                (122, 40, 72, -0.02460705550987633),
-                Some(BlockStateId::AIR),
-            ),
+            ((122, 40, 72, -0.02460705550987633), Some(BlockStateId::AIR)),
             ((122, 40, 74, -0.02133677750482264), None),
             (
                 (122, 60, 64, -0.02580014098083049),
@@ -2251,42 +2108,18 @@ mod test {
                 (122, 60, 74, -0.04490159197647781),
                 Some(WATER_BLOCK.default_state.id),
             ),
-            (
-                (122, 80, 64, -0.37247525946547166),
-                Some(BlockStateId::AIR),
-            ),
+            ((122, 80, 64, -0.37247525946547166), Some(BlockStateId::AIR)),
             ((122, 80, 66, -0.3727266378002749), Some(BlockStateId::AIR)),
-            (
-                (122, 80, 68, -0.36804742745663505),
-                Some(BlockStateId::AIR),
-            ),
+            ((122, 80, 68, -0.36804742745663505), Some(BlockStateId::AIR)),
             ((122, 80, 70, -0.3736723706537362), Some(BlockStateId::AIR)),
             ((122, 80, 72, -0.3860951288334311), Some(BlockStateId::AIR)),
             ((122, 80, 74, -0.3923721309133264), Some(BlockStateId::AIR)),
-            (
-                (122, 100, 64, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (122, 100, 66, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (122, 100, 68, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (122, 100, 70, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (122, 100, 72, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (122, 100, 74, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
+            ((122, 100, 64, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((122, 100, 66, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((122, 100, 68, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((122, 100, 70, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((122, 100, 72, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((122, 100, 74, -0.4583333333333333), Some(BlockStateId::AIR)),
             ((124, -100, 64, 0.037482421875), None),
             ((124, -100, 66, 0.037482421875), None),
             ((124, -100, 68, 0.037482421875), None),
@@ -2384,44 +2217,17 @@ mod test {
                 Some(WATER_BLOCK.default_state.id),
             ),
             ((124, 80, 64, -0.378513110274629), Some(BlockStateId::AIR)),
-            (
-                (124, 80, 66, -0.37887533037235366),
-                Some(BlockStateId::AIR),
-            ),
+            ((124, 80, 66, -0.37887533037235366), Some(BlockStateId::AIR)),
             ((124, 80, 68, -0.3755672366866089), Some(BlockStateId::AIR)),
             ((124, 80, 70, -0.3806264904596738), Some(BlockStateId::AIR)),
-            (
-                (124, 80, 72, -0.39139114552312176),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (124, 80, 74, -0.39905004304932734),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (124, 100, 64, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (124, 100, 66, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (124, 100, 68, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (124, 100, 70, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (124, 100, 72, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (124, 100, 74, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
+            ((124, 80, 72, -0.39139114552312176), Some(BlockStateId::AIR)),
+            ((124, 80, 74, -0.39905004304932734), Some(BlockStateId::AIR)),
+            ((124, 100, 64, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((124, 100, 66, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((124, 100, 68, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((124, 100, 70, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((124, 100, 72, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((124, 100, 74, -0.4583333333333333), Some(BlockStateId::AIR)),
             ((126, -100, 64, 0.037482421875), None),
             ((126, -100, 66, 0.037482421875), None),
             ((126, -100, 68, 0.037482421875), None),
@@ -2524,45 +2330,18 @@ mod test {
                 (126, 60, 74, -0.05663750895047857),
                 Some(WATER_BLOCK.default_state.id),
             ),
-            (
-                (126, 80, 64, -0.37931742687180287),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (126, 80, 66, -0.38265481838544235),
-                Some(BlockStateId::AIR),
-            ),
+            ((126, 80, 64, -0.37931742687180287), Some(BlockStateId::AIR)),
+            ((126, 80, 66, -0.38265481838544235), Some(BlockStateId::AIR)),
             ((126, 80, 68, -0.3808041835281554), Some(BlockStateId::AIR)),
-            (
-                (126, 80, 70, -0.38160238129796925),
-                Some(BlockStateId::AIR),
-            ),
+            ((126, 80, 70, -0.38160238129796925), Some(BlockStateId::AIR)),
             ((126, 80, 72, -0.387746448733821), Some(BlockStateId::AIR)),
             ((126, 80, 74, -0.3990668807989283), Some(BlockStateId::AIR)),
-            (
-                (126, 100, 64, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (126, 100, 66, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (126, 100, 68, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (126, 100, 70, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (126, 100, 72, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
-            (
-                (126, 100, 74, -0.4583333333333333),
-                Some(BlockStateId::AIR),
-            ),
+            ((126, 100, 64, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((126, 100, 66, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((126, 100, 68, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((126, 100, 70, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((126, 100, 72, -0.4583333333333333), Some(BlockStateId::AIR)),
+            ((126, 100, 74, -0.4583333333333333), Some(BlockStateId::AIR)),
         ];
 
         for ((x, y, z, sample), result) in values {

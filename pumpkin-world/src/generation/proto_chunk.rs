@@ -2,7 +2,10 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use pumpkin_data::{
-    block_properties::{blocks_movement, get_block_and_state_by_state_id, get_block_by_state_id}, chunk::Biome, tag::Tagable, Block, BlockState, BlockStateId
+    Block, BlockState, BlockStateId,
+    block_properties::{blocks_movement, get_block_and_state_by_state_id, get_block_by_state_id},
+    chunk::Biome,
+    tag::Tagable,
 };
 use pumpkin_util::{
     HeightMap,
@@ -191,7 +194,8 @@ impl<'a> ProtoChunk<'a> {
             noise_sampler: sampler,
             multi_noise_sampler,
             surface_height_estimate_sampler,
-            flat_block_map: vec![BlockStateId::AIR; CHUNK_AREA * height as usize].into_boxed_slice(),
+            flat_block_map: vec![BlockStateId::AIR; CHUNK_AREA * height as usize]
+                .into_boxed_slice(),
             flat_biome_map: vec![
                 &Biome::PLAINS;
                 biome_coords::from_block(CHUNK_DIM as usize)
@@ -776,7 +780,10 @@ impl BlockAccessor for ProtoChunk<'_> {
 mod test {
     use std::sync::LazyLock;
 
-    use pumpkin_data::{noise_router::{WrapperType, OVERWORLD_BASE_NOISE_ROUTER}, BlockStateId};
+    use pumpkin_data::{
+        BlockStateId,
+        noise_router::{OVERWORLD_BASE_NOISE_ROUTER, WrapperType},
+    };
     use pumpkin_util::math::vector2::Vector2;
 
     use crate::{
@@ -1107,7 +1114,10 @@ mod test {
 
         assert_eq!(
             expected_data,
-            chunk.flat_block_map.into_iter().collect::<Vec<BlockStateId>>()
+            chunk
+                .flat_block_map
+                .into_iter()
+                .collect::<Vec<BlockStateId>>()
         );
     }
 
@@ -1128,7 +1138,10 @@ mod test {
 
         assert_eq!(
             expected_data,
-            chunk.flat_block_map.into_iter().collect::<Vec<BlockStateId>>()
+            chunk
+                .flat_block_map
+                .into_iter()
+                .collect::<Vec<BlockStateId>>()
         );
     }
 
@@ -1160,7 +1173,7 @@ mod test {
 
     #[test]
     fn test_no_blend_no_beard_frozen_ocean() {
-        let expected_data: Vec<u16> =
+        let expected_data: Vec<BlockStateId> =
             read_data_from_file!("../../assets/no_blend_no_beard_-119_183.chunk");
         let surface_config = GENERATION_SETTINGS
             .get(&GeneratorSetting::Overworld)
@@ -1178,7 +1191,7 @@ mod test {
             .zip(chunk.flat_block_map)
             .enumerate()
             .for_each(|(index, (expected, actual))| {
-                if BlockStateId(expected) != actual {
+                if expected != actual {
                     panic!("expected {expected}, was {actual} (at {index})");
                 }
             });

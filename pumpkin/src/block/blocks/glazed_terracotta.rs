@@ -1,8 +1,8 @@
 use crate::block::pumpkin_block::{BlockMetadata, OnPlaceArgs, PumpkinBlock};
 use async_trait::async_trait;
+use pumpkin_data::BlockStateId;
 use pumpkin_data::block_properties::{BlockProperties, WallTorchLikeProperties};
 use pumpkin_data::tag::{RegistryKey, get_tag_values};
-use pumpkin_data::BlockStateId;
 
 pub struct GlazedTerracottaBlock;
 impl BlockMetadata for GlazedTerracottaBlock {

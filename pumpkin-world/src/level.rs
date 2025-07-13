@@ -2,7 +2,7 @@ use dashmap::{DashMap, Entry};
 use log::trace;
 use num_traits::Zero;
 use pumpkin_config::{advanced_config, chunk::ChunkFormat};
-use pumpkin_data::{block_properties::has_random_ticks, Block, BlockStateId};
+use pumpkin_data::{Block, BlockId, BlockStateId, block_properties::has_random_ticks};
 use pumpkin_util::math::{position::BlockPos, vector2::Vector2};
 use rand::{Rng, SeedableRng, rngs::SmallRng};
 use rayon::{ThreadPool, ThreadPoolBuilder};
@@ -446,7 +446,7 @@ impl Level {
                             block_pos: random_pos,
                             delay: 0,
                             priority: TickPriority::Normal,
-                            target_block_id: 0,
+                            target_block_id: BlockId::AIR,
                         });
                     }
                 }

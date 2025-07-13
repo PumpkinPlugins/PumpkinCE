@@ -1,5 +1,5 @@
-use pumpkin_data::packet::clientbound::PLAY_SECTION_BLOCKS_UPDATE;
 use pumpkin_data::BlockStateId;
+use pumpkin_data::packet::clientbound::PLAY_SECTION_BLOCKS_UPDATE;
 use pumpkin_util::math::{
     position::{BlockPos, chunk_section_from_pos, pack_local_chunk_section},
     vector3::{self, Vector3},
@@ -23,7 +23,9 @@ impl CMultiBlockUpdate {
             chunk_section,
             positions_to_state_ids: positions_to_state_ids
                 .into_iter()
-                .map(|(position, state_id)| (pack_local_chunk_section(&position), state_id.0 as i32))
+                .map(|(position, state_id)| {
+                    (pack_local_chunk_section(&position), state_id.0 as i32)
+                })
                 .collect(),
         }
     }

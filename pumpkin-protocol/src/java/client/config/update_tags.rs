@@ -40,7 +40,7 @@ impl ClientPacket for CUpdateTags<'_> {
                 p.write_string_bounded(key, u16::MAX as usize)?;
                 p.write_list(values, |p, string_id| {
                     let id = match registry_key {
-                        RegistryKey::Block => get_block(string_id).unwrap().id as i32,
+                        RegistryKey::Block => get_block(string_id).unwrap().id.0 as i32,
                         RegistryKey::Fluid => Fluid::ident_to_fluid_id(string_id).unwrap() as i32,
                         _ => unimplemented!(),
                     };

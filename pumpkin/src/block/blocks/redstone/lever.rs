@@ -9,7 +9,7 @@ use crate::block::{
 };
 use async_trait::async_trait;
 use pumpkin_data::{
-    Block, BlockStateId, BlockDirection, HorizontalFacingExt,
+    Block, BlockDirection, BlockStateId, HorizontalFacingExt,
     block_properties::{BlockFace, BlockProperties, LeverLikeProperties},
 };
 use pumpkin_macros::pumpkin_block;

@@ -12,8 +12,7 @@ use pumpkin_data::{
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::{boundingbox::BoundingBox, position::BlockPos};
 use pumpkin_world::{
-    block::entities::comparator::ComparatorBlockEntity, chunk::TickPriority,
-    world::BlockFlags,
+    block::entities::comparator::ComparatorBlockEntity, chunk::TickPriority, world::BlockFlags,
 };
 
 use crate::{

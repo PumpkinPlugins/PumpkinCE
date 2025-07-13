@@ -2,8 +2,8 @@ use crate::block::blocks::redstone::block_receives_redstone_power;
 use crate::block::pumpkin_block::{BlockMetadata, OnNeighborUpdateArgs, OnPlaceArgs, PumpkinBlock};
 use crate::entity::EntityBase;
 use async_trait::async_trait;
-use pumpkin_data::block_properties::BlockProperties;
 use pumpkin_data::BlockStateId;
+use pumpkin_data::block_properties::BlockProperties;
 use pumpkin_world::world::BlockFlags;
 
 type SkeletonSkullLikeProperties = pumpkin_data::block_properties::SkeletonSkullLikeProperties;

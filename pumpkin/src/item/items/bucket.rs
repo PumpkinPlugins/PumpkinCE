@@ -3,7 +3,10 @@ use std::sync::Arc;
 use crate::entity::player::Player;
 use async_trait::async_trait;
 use pumpkin_data::{
-    fluid::Fluid, item::Item, sound::{Sound, SoundCategory}, Block, BlockState, BlockStateId
+    Block, BlockState, BlockStateId,
+    fluid::Fluid,
+    item::Item,
+    sound::{Sound, SoundCategory},
 };
 use pumpkin_registry::VanillaDimensionType;
 use pumpkin_util::{

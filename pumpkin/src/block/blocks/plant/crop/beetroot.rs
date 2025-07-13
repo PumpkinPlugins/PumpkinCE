@@ -1,8 +1,8 @@
 use async_trait::async_trait;
-use pumpkin_data::{Block, BlockStateId};
 use pumpkin_data::block_properties::{
     BlockProperties, EnumVariants, Integer0To3, NetherWartLikeProperties,
 };
+use pumpkin_data::{Block, BlockStateId};
 use pumpkin_macros::pumpkin_block;
 use rand::Rng;
 
