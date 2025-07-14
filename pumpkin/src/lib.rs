@@ -197,10 +197,8 @@ impl PumpkinServer {
         }
 
         if rcon.enabled {
-            let rcon_server = server.clone();
-            server.spawn_task(async move {
-                RCONServer::run(&rcon, rcon_server).await.unwrap();
-            });
+            log::info!("RCON server is enabled. Starting...");
+            server.spawn_task(RCONServer::run(rcon.clone(), server.clone()));
         }
 
         // Setup the TCP server socket.
