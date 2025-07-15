@@ -351,7 +351,7 @@ impl PluginManager {
                 let task = tokio::spawn(async move {
                     // Initialize the plugin
                     match instance.on_load(context.clone()).await {
-                        Ok(_) => {
+                        Ok(()) => {
                             // Update plugin state to loaded
                             {
                                 let mut manager = self_ref_clone.write().await;
@@ -362,14 +362,14 @@ impl PluginManager {
                                 manager
                                     .plugin_states
                                     .insert(plugin_name.clone(), PluginState::Loaded);
-                            }
+                            };
                             state_notify.notify_waiters();
 
                             log::info!("Loaded {} ({})", metadata.name, metadata.version);
                         }
                         Err(e) => {
                             // Handle initialization failure
-                            let error_msg = format!("Initialization failed: {}", e);
+                            let error_msg = format!("Initialization failed: {e}");
                             let _ = instance.on_unload(context).await;
 
                             // Get the loader data before removing the plugin
@@ -398,14 +398,10 @@ impl PluginManager {
                                     plugin_name.clone(),
                                     PluginState::Failed(error_msg.clone()),
                                 );
-                            }
+                            };
                             state_notify.notify_waiters();
 
-                            log::error!(
-                                "Failed to initialize plugin {}: {}",
-                                plugin_name,
-                                error_msg
-                            );
+                            log::error!("Failed to initialize plugin {plugin_name}: {error_msg}",);
                         }
                     }
                 });
@@ -426,8 +422,7 @@ impl PluginManager {
     pub async fn try_load_plugin(&mut self, path: &Path) -> Result<(), ManagerError> {
         self.start_loading_plugin(path).await?.await.map_err(|e| {
             ManagerError::LoaderError(LoaderError::InitializationFailed(format!(
-                "Task join error: {}",
-                e
+                "Task join error: {e}"
             )))
         })
     }
@@ -449,13 +444,13 @@ impl PluginManager {
                         continue;
                     }
                 }
-            } else {
-                return Err(ManagerError::PluginNotFound(plugin_name.to_string()));
             }
+            return Err(ManagerError::PluginNotFound(plugin_name.to_string()));
         }
     }
 
     /// Get the current state of a plugin
+    #[must_use]
     pub fn get_plugin_state(&self, plugin_name: &str) -> Option<PluginState> {
         self.plugin_states.get(plugin_name).cloned()
     }
@@ -520,6 +515,7 @@ impl PluginManager {
     }
 
     /// Get all plugins that are currently loading
+    #[must_use]
     pub fn get_loading_plugins(&self) -> Vec<String> {
         self.plugin_states
             .iter()
@@ -529,6 +525,7 @@ impl PluginManager {
     }
 
     /// Get all plugins that failed to load
+    #[must_use]
     pub fn get_failed_plugins(&self) -> Vec<(String, String)> {
         self.plugin_states
             .iter()
@@ -543,6 +540,7 @@ impl PluginManager {
     }
 
     /// Check if all plugins have finished loading (either succeeded or failed)
+    #[must_use]
     pub fn all_plugins_loaded(&self) -> bool {
         !self
             .plugin_states
