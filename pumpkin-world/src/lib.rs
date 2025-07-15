@@ -17,9 +17,6 @@ pub mod lock;
 pub mod world;
 pub mod world_info;
 
-pub type BlockId = u16;
-pub type BlockStateId = u16;
-
 #[macro_export]
 macro_rules! global_path {
     ($path:expr) => {{

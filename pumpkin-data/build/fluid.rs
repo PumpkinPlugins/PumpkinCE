@@ -220,7 +220,7 @@ impl ToTokens for FluidPropertyStruct {
                     }
                 }
 
-                fn to_state_id(&self, fluid: &Fluid) -> u16 {
+                fn to_state_id(&self, fluid: &Fluid) -> BlockStateId {
                     if ![#(#fluid_names),*].contains(&fluid.name) {
                         panic!("{} is not a valid fluid for {}", &fluid.name, #struct_name);
                     }
@@ -233,7 +233,7 @@ impl ToTokens for FluidPropertyStruct {
                     }
                 }
 
-                fn from_state_id(state_id: u16, fluid: &Fluid) -> Self {
+                fn from_state_id(state_id: BlockStateId, fluid: &Fluid) -> Self {
                     if ![#(#fluid_names),*].contains(&fluid.name) {
                         panic!("{} is not a valid fluid for {}", &fluid.name, #struct_name);
                     }
@@ -252,7 +252,7 @@ impl ToTokens for FluidPropertyStruct {
                         panic!("{} is not a valid fluid for {}", &fluid.name, #struct_name);
                     }
 
-                    Self::from_state_id(fluid.default_state_index, fluid)
+                    Self::from_index(fluid.default_state_index)
                 }
 
                 fn to_props(&self) -> Vec<(String, String)> {
@@ -470,7 +470,7 @@ pub(crate) fn build() -> TokenStream {
                     level: #level,
                     is_empty: #is_empty,
                     blast_resistance: #blast_resistance,
-                    block_state_id: #block_state_id,
+                    block_state_id: BlockStateId(#block_state_id),
                     is_still: #is_still,
                     is_source: #is_source,
                     falling: #falling,
@@ -557,7 +557,7 @@ pub(crate) fn build() -> TokenStream {
                 level: #level,
                 is_empty: #is_empty,
                 blast_resistance: #blast_resistance,
-                block_state_id: #block_state_id,
+                block_state_id: BlockStateId(#block_state_id),
                 is_still: #is_still,
                 is_source: #is_source,
                 falling: #falling,
@@ -596,6 +596,7 @@ pub(crate) fn build() -> TokenStream {
     quote! {
         use std::hash::{Hash, Hasher};
         use crate::tag::{Tagable, RegistryKey};
+        use crate::BlockStateId;
         use pumpkin_util::resource_location::{FromResourceLocation, ResourceLocation, ToResourceLocation};
 
         #[derive(Clone, Debug)]
@@ -604,7 +605,7 @@ pub(crate) fn build() -> TokenStream {
             pub level: i16,
             pub is_empty: bool,
             pub blast_resistance: f32,
-            pub block_state_id: u16,
+            pub block_state_id: BlockStateId,
             pub is_still: bool,
             pub is_source: bool,
             pub falling: bool,
@@ -616,7 +617,7 @@ pub(crate) fn build() -> TokenStream {
             pub level: i16,
             pub is_empty: bool,
             pub blast_resistance: f32,
-            pub block_state_id: u16,
+            pub block_state_id: BlockStateId,
             pub is_still: bool,
             pub is_source: bool,
             pub falling: bool,
@@ -673,9 +674,9 @@ pub(crate) fn build() -> TokenStream {
             fn from_index(index: u16) -> Self where Self: Sized;
 
             // Convert properties to a state id.
-            fn to_state_id(&self, fluid: &Fluid) -> u16;
+            fn to_state_id(&self, fluid: &Fluid) -> BlockStateId;
             // Convert a state id back to properties.
-            fn from_state_id(state_id: u16, fluid: &Fluid) -> Self where Self: Sized;
+            fn from_state_id(state_id: BlockStateId, fluid: &Fluid) -> Self where Self: Sized;
             // Get the default properties.
             fn default(fluid: &Fluid) -> Self where Self: Sized;
 
@@ -708,8 +709,8 @@ pub(crate) fn build() -> TokenStream {
                 }
             }
             #[allow(unreachable_patterns)]
-            pub const fn from_state_id(id: u16) -> Option<&'static Self> {
-                match id {
+            pub const fn from_state_id(id: BlockStateId) -> Option<&'static Self> {
+                match id.0 {
                     #fluid_from_state_id
                     _ => None
                 }
@@ -724,7 +725,7 @@ pub(crate) fn build() -> TokenStream {
             }
 
             #[doc = r" Get the properties of the fluid."]
-            pub fn properties(&self, state_id: u16) -> Option<Box<dyn FluidProperties>> {
+            pub fn properties(&self, state_id: BlockStateId) -> Option<Box<dyn FluidProperties>> {
                 match self.name {
                     #fluid_properties_from_state_and_name
                     _ => None
@@ -740,23 +741,23 @@ pub(crate) fn build() -> TokenStream {
             }
 
             // Added helper methods for fluid behavior
-            pub fn is_source(&self, state_id: u16) -> bool {
-                let idx = (state_id as usize) % self.states.len();
+            pub fn is_source(&self, state_id: BlockStateId) -> bool {
+                let idx = (state_id.0 as usize) % self.states.len();
                 self.states[idx].is_source
             }
 
-            pub fn is_falling(&self, state_id: u16) -> bool {
-                let idx = (state_id as usize) % self.states.len();
+            pub fn is_falling(&self, state_id: BlockStateId) -> bool {
+                let idx = (state_id.0 as usize) % self.states.len();
                 self.states[idx].falling
             }
 
-            pub fn get_level(&self, state_id: u16) -> i16 {
-                let idx = (state_id as usize) % self.states.len();
+            pub fn get_level(&self, state_id: BlockStateId) -> i16 {
+                let idx = (state_id.0 as usize) % self.states.len();
                 self.states[idx].level
             }
 
-            pub fn get_height(&self, state_id: u16) -> f32 {
-                let idx = (state_id as usize) % self.states.len();
+            pub fn get_height(&self, state_id: BlockStateId) -> f32 {
+                let idx = (state_id.0 as usize) % self.states.len();
                 self.states[idx].height
             }
         }

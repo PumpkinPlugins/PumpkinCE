@@ -1,12 +1,12 @@
 use async_trait::async_trait;
 use pumpkin_data::{
-    BlockDirection,
+    BlockDirection, BlockStateId,
     block_properties::{BlockProperties, CandleLikeProperties, EnumVariants, Integer1To4},
     entity::EntityPose,
     item::Item,
     tag::{RegistryKey, get_tag_values},
 };
-use pumpkin_world::{BlockStateId, world::BlockFlags};
+use pumpkin_world::world::BlockFlags;
 
 use crate::{
     block::{
@@ -59,7 +59,8 @@ impl PumpkinBlock for CandleBlock {
         drop(item_lock);
         match item.id {
             id if (Item::CANDLE.id..=Item::BLACK_CANDLE.id).contains(&id)
-                && item.id == args.block.id =>
+                // TODO: Can we check that this is correct to compare an item id with a block id?
+                && item.id == args.block.id.0 =>
             {
                 if properties.candles.to_index() < 3 {
                     properties.candles = Integer1To4::from_index(properties.candles.to_index() + 1);

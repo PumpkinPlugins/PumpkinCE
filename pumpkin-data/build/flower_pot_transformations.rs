@@ -12,16 +12,18 @@ pub(crate) fn build() -> TokenStream {
 
     for (item_id, potted_block_id) in flower_pot_transformation {
         variants.extend(quote! {
-            #item_id => Some(#potted_block_id),
+            #item_id => #potted_block_id,
         });
     }
     quote! {
+        use crate::BlockId;
+
         #[must_use]
-        pub const fn get_potted_item(item_id: u16) -> Option<u16> {
-            match item_id {
+        pub const fn get_potted_item(item_id: u16) -> Option<BlockId> {
+            Some(BlockId(match item_id {
                 #variants
-                _ => None,
-            }
+                _ => return None,
+            }))
         }
     }
 }

@@ -52,7 +52,7 @@ pub fn cake_from_candle(item: &Item) -> &'static Block {
 #[must_use]
 pub fn candle_from_cake(block: &Block) -> &'static Item {
     CANDLE_MAP
-        .binary_search_by_key(&block.id, |(_, value)| value.id)
+        .binary_search_by_key(&block.id.0, |(_, value)| value.id.0)
         .map_or_else(
             |_| panic!("Expected a candle cake block, got {}", block.id),
             |index| CANDLE_MAP[index].0,

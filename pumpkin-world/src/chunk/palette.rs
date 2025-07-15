@@ -4,7 +4,7 @@ use std::{
     hash::Hash,
 };
 
-use pumpkin_data::{Block, block_properties::get_state_by_state_id, chunk::Biome};
+use pumpkin_data::{Block, BlockStateId, block_properties::get_state_by_state_id, chunk::Biome};
 use pumpkin_util::encompassing_bits;
 
 use crate::block::BlockStateCodec;
@@ -324,7 +324,7 @@ impl BiomePalette {
 }
 
 impl BlockPalette {
-    pub fn convert_network(&self) -> NetworkSerialization<u16> {
+    pub fn convert_network(&self) -> NetworkSerialization<BlockStateId> {
         match self {
             Self::Homogeneous(registry_id) => NetworkSerialization {
                 bits_per_entry: 0,
@@ -343,10 +343,10 @@ impl BlockPalette {
                         .chunks(values_per_i64 as usize)
                         .map(|chunk| {
                             chunk.iter().enumerate().fold(0, |acc, (index, value)| {
-                                debug_assert!((1 << bits_per_entry) > *value);
+                                debug_assert!((1 << bits_per_entry) > value.0);
 
                                 let packed_offset_index =
-                                    (*value as i64) << (bits_per_entry as u64 * index as u64);
+                                    (value.0 as i64) << (bits_per_entry as u64 * index as u64);
                                 acc | packed_offset_index
                             })
                         })
@@ -424,7 +424,7 @@ impl BlockPalette {
         }
     }
 
-    fn block_state_id_to_palette_entry(registry_id: u16) -> BlockStateCodec {
+    fn block_state_id_to_palette_entry(registry_id: BlockStateId) -> BlockStateCodec {
         let block = Block::from_state_id(registry_id);
 
         BlockStateCodec {
@@ -451,7 +451,7 @@ pub struct NetworkSerialization<V> {
 // directly instead of using a palette above a certain bits-per-entry
 
 // TODO: Do our own testing; do we really need to handle network and disk serialization differently?
-pub type BlockPalette = PalettedContainer<u16, 16>;
+pub type BlockPalette = PalettedContainer<BlockStateId, 16>;
 const BLOCK_DISK_MIN_BITS: u8 = 4;
 const BLOCK_NETWORK_MIN_MAP_BITS: u8 = 4;
 const BLOCK_NETWORK_MAX_MAP_BITS: u8 = 8;

@@ -2,13 +2,13 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use pumpkin_data::{
-    Block, BlockDirection,
+    Block, BlockDirection, BlockId, BlockStateId,
     fluid::{Falling, Fluid, FluidProperties, Level},
     world::WorldEvent,
 };
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::{BlockStateId, world::BlockFlags};
+use pumpkin_world::world::BlockFlags;
 
 use crate::{block::pumpkin_fluid::PumpkinFluid, entity::EntityBase, world::World};
 
@@ -85,7 +85,8 @@ impl PumpkinFluid for FlowingLava {
     ) {
         if old_state_id != state_id && self.receive_neighbor_fluids(world, fluid, block_pos).await {
             world
-                .schedule_fluid_tick(fluid.id, *block_pos, LAVA_FLOW_SPEED)
+                // FIXME: fluid ID used as block ID. see callee
+                .schedule_fluid_tick(BlockId(fluid.id), *block_pos, LAVA_FLOW_SPEED)
                 .await;
         }
     }
@@ -103,7 +104,8 @@ impl PumpkinFluid for FlowingLava {
     ) {
         if self.receive_neighbor_fluids(world, fluid, block_pos).await {
             world
-                .schedule_fluid_tick(fluid.id, *block_pos, LAVA_FLOW_SPEED)
+                // FIXME: fluid ID used as block ID. see callee
+                .schedule_fluid_tick(BlockId(fluid.id), *block_pos, LAVA_FLOW_SPEED)
                 .await;
         }
     }

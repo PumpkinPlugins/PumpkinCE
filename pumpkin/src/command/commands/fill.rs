@@ -8,7 +8,7 @@ use crate::command::tree::builder::{argument, literal};
 use crate::command::{CommandError, CommandExecutor, CommandSender};
 
 use async_trait::async_trait;
-use pumpkin_data::Block;
+use pumpkin_data::{Block, BlockStateId};
 use pumpkin_util::math::position::BlockPos;
 use pumpkin_util::math::vector3::Vector3;
 use pumpkin_util::text::TextComponent;
@@ -187,7 +187,11 @@ impl CommandExecutor for Executor {
                                     .await;
                             } else {
                                 world
-                                    .set_block_state(&block_position, 0, BlockFlags::FORCE_STATE)
+                                    .set_block_state(
+                                        &block_position,
+                                        BlockStateId::AIR,
+                                        BlockFlags::FORCE_STATE,
+                                    )
                                     .await;
                             }
                             placed_blocks += 1;

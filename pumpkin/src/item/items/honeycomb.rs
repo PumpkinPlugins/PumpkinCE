@@ -2,12 +2,12 @@ use crate::entity::player::Player;
 use crate::item::pumpkin_item::{ItemMetadata, PumpkinItem};
 use crate::server::Server;
 use async_trait::async_trait;
-use pumpkin_data::Block;
 use pumpkin_data::BlockDirection;
 use pumpkin_data::block_properties::BlockProperties;
 use pumpkin_data::block_properties::OakDoorLikeProperties;
 use pumpkin_data::item::Item;
 use pumpkin_data::tag::Tagable;
+use pumpkin_data::{Block, BlockId};
 use pumpkin_util::math::position::BlockPos;
 use pumpkin_world::world::BlockFlags;
 
@@ -70,7 +70,7 @@ impl PumpkinItem for HoneyCombItem {
     }
 }
 
-fn get_waxed_equivalent(block: &Block) -> Option<u16> {
+fn get_waxed_equivalent(block: &Block) -> Option<BlockId> {
     match &block.id {
         id if id == &Block::OXIDIZED_COPPER.id => Some(Block::WAXED_OXIDIZED_COPPER.id),
         id if id == &Block::WEATHERED_COPPER.id => Some(Block::WAXED_WEATHERED_COPPER.id),

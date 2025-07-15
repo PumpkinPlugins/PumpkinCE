@@ -6,13 +6,13 @@ use crate::block::{
     registry::BlockActionResult,
 };
 use async_trait::async_trait;
+use pumpkin_data::BlockStateId;
 use pumpkin_data::block_properties::{BarrelLikeProperties, BlockProperties};
 use pumpkin_inventory::generic_container_screen_handler::create_generic_9x3;
 use pumpkin_inventory::player::player_inventory::PlayerInventory;
 use pumpkin_inventory::screen_handler::{InventoryPlayer, ScreenHandler, ScreenHandlerFactory};
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::text::TextComponent;
-use pumpkin_world::BlockStateId;
 use pumpkin_world::block::entities::barrel::BarrelBlockEntity;
 use pumpkin_world::inventory::Inventory;
 use tokio::sync::Mutex;

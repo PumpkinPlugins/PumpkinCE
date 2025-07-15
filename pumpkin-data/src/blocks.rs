@@ -1,5 +1,5 @@
 use crate::{
-    BlockState, BlockStateRef,
+    BlockState, BlockStateId, BlockStateRef,
     block_properties::get_state_by_state_id,
     tag::{RegistryKey, Tagable},
 };
@@ -10,9 +10,23 @@ use pumpkin_util::{
 };
 use std::hash::{Hash, Hasher};
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub struct BlockId(pub u16);
+
+impl std::fmt::Display for BlockId {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl BlockId {
+    // TODO: Are we sure that this is always 0?
+    pub const AIR: BlockId = BlockId(0);
+}
+
 #[derive(Debug)]
 pub struct Block {
-    pub id: u16,
+    pub id: BlockId,
     pub name: &'static str,
     pub translation_key: &'static str,
     pub hardness: f32,
@@ -67,7 +81,7 @@ impl FromResourceLocation for &'static Block {
 }
 
 impl Block {
-    pub fn is_waterlogged(&self, state_id: u16) -> bool {
+    pub fn is_waterlogged(&self, state_id: BlockStateId) -> bool {
         self.properties(state_id).is_some_and(|properties| {
             properties
                 .to_props()

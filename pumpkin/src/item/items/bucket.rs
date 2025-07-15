@@ -3,7 +3,7 @@ use std::sync::Arc;
 use crate::entity::player::Player;
 use async_trait::async_trait;
 use pumpkin_data::{
-    Block, BlockState,
+    Block, BlockState, BlockStateId,
     fluid::Fluid,
     item::Item,
     sound::{Sound, SoundCategory},
@@ -77,7 +77,7 @@ fn waterlogged_check(block: &Block, state: &BlockState) -> Option<bool> {
     })
 }
 
-fn set_waterlogged(block: &Block, state: &BlockState, waterlogged: bool) -> u16 {
+fn set_waterlogged(block: &Block, state: &BlockState, waterlogged: bool) -> BlockStateId {
     let original_props = &block.properties(state.id).unwrap().to_props();
     let waterlogged = waterlogged.to_string();
     let props = original_props
@@ -208,7 +208,7 @@ impl PumpkinItem for FilledBucketItem {
             if Fluid::from_state_id(state_id).is_some() {
                 return false;
             }
-            state_id != Block::AIR.id
+            state_id != BlockStateId::AIR
         };
 
         let Some((pos, direction)) = world.raycast(start_pos, end_pos, checker).await else {

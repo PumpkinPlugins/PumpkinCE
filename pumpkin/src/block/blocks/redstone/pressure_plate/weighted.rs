@@ -1,10 +1,10 @@
 use async_trait::async_trait;
 use pumpkin_data::{
-    Block, BlockDirection, BlockState,
+    Block, BlockDirection, BlockState, BlockStateId,
     block_properties::{BlockProperties, EnumVariants, Integer0To15},
 };
 use pumpkin_util::math::{boundingbox::BoundingBox, position::BlockPos};
-use pumpkin_world::{BlockStateId, world::BlockFlags};
+use pumpkin_world::world::BlockFlags;
 
 use crate::{
     block::pumpkin_block::{
@@ -108,12 +108,7 @@ impl PressurePlate for WeightedPressurePlateBlock {
         0
     }
 
-    fn set_redstone_output(
-        &self,
-        block: &Block,
-        state: &BlockState,
-        output: u8,
-    ) -> pumpkin_world::BlockStateId {
+    fn set_redstone_output(&self, block: &Block, state: &BlockState, output: u8) -> BlockStateId {
         let mut props = PressurePlateProps::from_state_id(state.id, block);
         props.power = Integer0To15::from_index(u16::from(output));
         props.to_state_id(block)

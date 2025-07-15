@@ -2,14 +2,13 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use pumpkin_data::{
-    Block, BlockDirection,
+    Block, BlockDirection, BlockStateId,
     block_properties::BlockProperties,
     sound::{Sound, SoundCategory},
 };
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::position::BlockPos;
 use pumpkin_world::{
-    BlockStateId,
     chunk::TickPriority,
     world::{BlockAccessor, BlockFlags},
 };

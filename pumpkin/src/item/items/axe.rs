@@ -2,12 +2,12 @@ use crate::entity::player::Player;
 use crate::item::pumpkin_item::{ItemMetadata, PumpkinItem};
 use crate::server::Server;
 use async_trait::async_trait;
-use pumpkin_data::Block;
 use pumpkin_data::BlockDirection;
 use pumpkin_data::block_properties::BlockProperties;
 use pumpkin_data::block_properties::{OakDoorLikeProperties, PaleOakWoodLikeProperties};
 use pumpkin_data::item::Item;
 use pumpkin_data::tag::Tagable;
+use pumpkin_data::{Block, BlockId};
 use pumpkin_util::math::position::BlockPos;
 use pumpkin_world::world::BlockFlags;
 
@@ -88,7 +88,7 @@ impl PumpkinItem for AxeItem {
         }
     }
 }
-fn try_use_axe(block: &Block) -> Option<u16> {
+fn try_use_axe(block: &Block) -> Option<BlockId> {
     // Trying to get the strip equivalent
     let block_id = get_stripped_equivalent(block);
     if block_id.is_some() {
@@ -107,7 +107,7 @@ fn try_use_axe(block: &Block) -> Option<u16> {
     None
 }
 
-fn get_stripped_equivalent(block: &Block) -> Option<u16> {
+fn get_stripped_equivalent(block: &Block) -> Option<BlockId> {
     let new_block_id = match &block.id {
         id if id == &Block::OAK_LOG.id => Block::STRIPPED_OAK_LOG.id,
         id if id == &Block::SPRUCE_LOG.id => Block::STRIPPED_SPRUCE_LOG.id,
@@ -136,7 +136,7 @@ fn get_stripped_equivalent(block: &Block) -> Option<u16> {
     Some(new_block_id)
 }
 
-fn get_deoxidized_equivalent(block: &Block) -> Option<u16> {
+fn get_deoxidized_equivalent(block: &Block) -> Option<BlockId> {
     match &block.id {
         id if id == &Block::OXIDIZED_COPPER.id => Some(Block::WEATHERED_COPPER.id),
         id if id == &Block::WEATHERED_COPPER.id => Some(Block::EXPOSED_COPPER.id),
@@ -179,7 +179,7 @@ fn get_deoxidized_equivalent(block: &Block) -> Option<u16> {
     }
 }
 
-fn get_unwaxed_equivalent(block: &Block) -> Option<u16> {
+fn get_unwaxed_equivalent(block: &Block) -> Option<BlockId> {
     match &block.id {
         id if id == &Block::WAXED_OXIDIZED_COPPER.id => Some(Block::OXIDIZED_COPPER.id),
         id if id == &Block::WAXED_WEATHERED_COPPER.id => Some(Block::WEATHERED_COPPER.id),

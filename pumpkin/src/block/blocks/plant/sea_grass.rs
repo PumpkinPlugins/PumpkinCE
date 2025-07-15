@@ -1,7 +1,6 @@
 use async_trait::async_trait;
-use pumpkin_data::{Block, BlockDirection};
+use pumpkin_data::{Block, BlockDirection, BlockStateId};
 use pumpkin_macros::pumpkin_block;
-use pumpkin_world::BlockStateId;
 
 use crate::block::{
     blocks::plant::PlantBlockBase,

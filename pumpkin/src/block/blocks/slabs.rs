@@ -1,10 +1,10 @@
 use async_trait::async_trait;
 use pumpkin_data::BlockDirection;
+use pumpkin_data::BlockStateId;
 use pumpkin_data::block_properties::BlockProperties;
 use pumpkin_data::block_properties::SlabType;
 use pumpkin_data::tag::RegistryKey;
 use pumpkin_data::tag::get_tag_values;
-use pumpkin_world::BlockStateId;
 
 use crate::block::BlockIsReplacing;
 use crate::block::pumpkin_block::CanUpdateAtArgs;

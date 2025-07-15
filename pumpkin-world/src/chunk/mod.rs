@@ -1,5 +1,6 @@
 use crate::block::entities::BlockEntity;
 use palette::{BiomePalette, BlockPalette};
+use pumpkin_data::{BlockId, BlockStateId};
 use pumpkin_nbt::compound::NbtCompound;
 use pumpkin_nbt::nbt_long_array;
 use pumpkin_util::math::{position::BlockPos, vector2::Vector2};
@@ -8,7 +9,6 @@ use std::collections::VecDeque;
 use std::{collections::HashMap, sync::Arc};
 use thiserror::Error;
 
-use crate::BlockStateId;
 use crate::chunk::format::LightContainer;
 
 pub mod format;
@@ -107,7 +107,7 @@ pub struct ScheduledTick {
     pub block_pos: BlockPos,
     pub delay: u16,
     pub priority: TickPriority,
-    pub target_block_id: u16,
+    pub target_block_id: BlockId,
 }
 
 // Clone here cause we want to clone a snapshot of the chunk so we don't block writing for too long
@@ -155,7 +155,7 @@ impl ChunkData {
         ticks
     }
 
-    pub fn is_block_tick_scheduled(&self, block_pos: &BlockPos, block_id: u16) -> bool {
+    pub fn is_block_tick_scheduled(&self, block_pos: &BlockPos, block_id: BlockId) -> bool {
         self.block_ticks
             .iter()
             .any(|tick| tick.block_pos == *block_pos && tick.target_block_id == block_id)
@@ -169,7 +169,7 @@ impl ChunkData {
 
     pub fn schedule_block_tick(
         &mut self,
-        block_id: u16,
+        block_id: BlockId,
         block_pos: BlockPos,
         delay: u16,
         priority: TickPriority,
@@ -182,7 +182,7 @@ impl ChunkData {
         });
     }
 
-    pub fn schedule_fluid_tick(&mut self, block_id: u16, block_pos: &BlockPos, delay: u16) {
+    pub fn schedule_fluid_tick(&mut self, block_id: BlockId, block_pos: &BlockPos, delay: u16) {
         if self
             .fluid_ticks
             .iter()
@@ -222,7 +222,7 @@ pub struct ChunkSections {
 
 impl ChunkSections {
     #[cfg(test)]
-    pub fn dump_blocks(&self) -> Vec<u16> {
+    pub fn dump_blocks(&self) -> Vec<BlockStateId> {
         // TODO: this is not optimal, we could use rust iters
         let mut dump = Vec::new();
         for section in self.sections.iter() {

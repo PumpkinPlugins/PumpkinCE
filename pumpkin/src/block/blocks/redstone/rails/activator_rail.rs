@@ -1,6 +1,6 @@
 use async_trait::async_trait;
+use pumpkin_data::BlockStateId;
 use pumpkin_macros::pumpkin_block;
-use pumpkin_world::BlockStateId;
 use pumpkin_world::world::BlockFlags;
 use std::sync::Arc;
 

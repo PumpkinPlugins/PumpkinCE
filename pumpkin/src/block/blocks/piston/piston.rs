@@ -2,7 +2,7 @@ use std::{collections::HashMap, sync::Arc};
 
 use async_trait::async_trait;
 use pumpkin_data::{
-    Block, BlockDirection, BlockState, FacingExt,
+    Block, BlockDirection, BlockState, BlockStateId, FacingExt,
     block_properties::{
         BlockProperties, MovingPistonLikeProperties, PistonHeadLikeProperties, PistonType,
         get_block_by_state_id, get_state_by_state_id,
@@ -11,7 +11,6 @@ use pumpkin_data::{
 };
 use pumpkin_util::math::position::BlockPos;
 use pumpkin_world::{
-    BlockStateId,
     block::entities::{has_block_block_entity, piston::PistonBlockEntity},
     world::BlockFlags,
 };

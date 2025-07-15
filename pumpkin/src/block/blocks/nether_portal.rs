@@ -7,13 +7,12 @@ use crate::entity::EntityBase;
 use crate::world::World;
 use crate::world::portal::nether::NetherPortal;
 use async_trait::async_trait;
-use pumpkin_data::Block;
 use pumpkin_data::block_properties::{Axis, BlockProperties, NetherPortalLikeProperties};
 use pumpkin_data::entity::EntityType;
+use pumpkin_data::{Block, BlockStateId};
 use pumpkin_macros::pumpkin_block;
 use pumpkin_registry::VanillaDimensionType;
 use pumpkin_util::GameMode;
-use pumpkin_world::BlockStateId;
 
 #[pumpkin_block("minecraft:nether_portal")]
 pub struct NetherPortalBlock;

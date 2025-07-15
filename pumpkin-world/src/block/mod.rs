@@ -1,16 +1,12 @@
 pub mod entities;
-pub mod state;
 
 use std::collections::HashMap;
 
 use pumpkin_data::{
-    Block, BlockState,
+    Block, BlockState, BlockStateId,
     block_properties::{get_block, get_state_by_state_id},
 };
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
-pub use state::RawBlockState;
-
-use crate::BlockStateId;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "PascalCase")]
@@ -68,13 +64,13 @@ impl BlockStateCodec {
 
 #[cfg(test)]
 mod test {
-    use pumpkin_data::Block;
+    use pumpkin_data::{Block, BlockStateId};
 
     use crate::chunk::palette::BLOCK_NETWORK_MAX_BITS;
 
     #[test]
     fn test_proper_network_bits_per_entry() {
-        let id_to_test = 1 << BLOCK_NETWORK_MAX_BITS;
+        let id_to_test = BlockStateId(1 << BLOCK_NETWORK_MAX_BITS);
         if Block::from_state_id(id_to_test) != &Block::AIR {
             panic!("We need to update our constants!");
         }

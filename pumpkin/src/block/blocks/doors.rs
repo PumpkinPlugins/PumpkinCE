@@ -1,5 +1,4 @@
 use async_trait::async_trait;
-use pumpkin_data::Block;
 use pumpkin_data::BlockDirection;
 use pumpkin_data::HorizontalFacingExt;
 use pumpkin_data::block_properties::Axis;
@@ -12,8 +11,8 @@ use pumpkin_data::sound::SoundCategory;
 use pumpkin_data::tag::RegistryKey;
 use pumpkin_data::tag::Tagable;
 use pumpkin_data::tag::get_tag_values;
+use pumpkin_data::{Block, BlockStateId};
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::BlockStateId;
 use pumpkin_world::world::BlockAccessor;
 use pumpkin_world::world::BlockFlags;
 use std::sync::Arc;
@@ -280,7 +279,7 @@ impl PumpkinBlock for DoorBlock {
                 && args.direction == BlockDirection::Down
                 && !can_place_at(args.world, args.position).await
             {
-                return 0;
+                return BlockStateId::AIR;
             }
         } else if Block::from_state_id(args.neighbor_state_id).id == args.block.id
             && DoorProperties::from_state_id(args.neighbor_state_id, args.block).half != lv
@@ -289,7 +288,7 @@ impl PumpkinBlock for DoorBlock {
             new_state.half = lv;
             return new_state.to_state_id(args.block);
         } else {
-            return 0;
+            return BlockStateId::AIR;
         }
         args.state_id
     }

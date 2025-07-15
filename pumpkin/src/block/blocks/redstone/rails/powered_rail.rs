@@ -1,6 +1,5 @@
 use async_trait::async_trait;
 use pumpkin_macros::pumpkin_block;
-use pumpkin_world::BlockStateId;
 use pumpkin_world::world::BlockFlags;
 use std::sync::Arc;
 
@@ -11,7 +10,7 @@ use crate::block::pumpkin_block::OnStateReplacedArgs;
 use crate::block::pumpkin_block::PlacedArgs;
 use crate::block::pumpkin_block::PumpkinBlock;
 use crate::world::World;
-use pumpkin_data::Block;
+use pumpkin_data::{Block, BlockStateId};
 use pumpkin_util::math::position::BlockPos;
 
 use super::super::block_receives_redstone_power;

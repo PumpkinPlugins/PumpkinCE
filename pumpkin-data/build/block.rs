@@ -293,26 +293,26 @@ impl ToTokens for BlockPropertyStruct {
                 }
 
                 #[inline]
-                fn handles_block_id(block_id: u16) -> bool where Self: Sized {
-                    [#(#block_ids),*].contains(&block_id)
+                fn handles_block_id(block_id: BlockId) -> bool where Self: Sized {
+                    [#(#block_ids),*].contains(&block_id.0)
                 }
 
-                fn to_state_id(&self, block: &Block) -> u16 {
+                fn to_state_id(&self, block: &Block) -> BlockStateId {
                     if !Self::handles_block_id(block.id) {
                         panic!("{} is not a valid block for {}", &block.name, #struct_name);
                     }
-                    block.states[0].id + self.to_index()
+                    BlockStateId(block.states[0].id.0 + self.to_index())
                 }
 
-                fn from_state_id(state_id: u16, block: &Block) -> Self {
+                fn from_state_id(state_id: BlockStateId, block: &Block) -> Self {
                     if !Self::handles_block_id(block.id) {
                         panic!("{} is not a valid block for {}", &block.name, #struct_name);
                     }
-                    if state_id >= block.states[0].id && state_id <= block.states.last().unwrap().id {
-                        let index = state_id - block.states[0].id;
+                    if state_id.0 >= block.states[0].id.0 && state_id.0 <= block.states.last().unwrap().id.0{
+                        let index = state_id.0 - block.states[0].id.0;
                         Self::from_index(index)
                     } else {
-                        panic!("State ID {} does not exist for {}", state_id, &block.name);
+                        panic!("State ID {} does not exist for {}", state_id.0, &block.name);
                     }
                 }
 
@@ -327,7 +327,7 @@ impl ToTokens for BlockPropertyStruct {
                    HashMap::from([#(#to_props_values)*])
                 }
                 fn from_props(props: HashMap<&str, &str>, block: &Block) -> Self {
-                    if ![#(#block_ids),*].contains(&block.id) {
+                    if ![#(#block_ids),*].contains(&block.id.0) {
                         panic!("{} is not a valid block for {}", &block.name, #struct_name);
                     }
                     let mut block_props = Self::default(block);
@@ -465,7 +465,7 @@ impl BlockState {
 
         tokens.extend(quote! {
             BlockState {
-                id: #id,
+                id: BlockStateId(#id),
                 state_flags: #state_flags,
                 side_flags: #side_flags,
                 instrument: Instrument::#instrument,
@@ -547,7 +547,7 @@ impl Block {
         };
         tokens.extend(quote! {
             Block {
-                id: #id,
+                id: BlockId(#id),
                 name: #name,
                 translation_key: #translation_key,
                 hardness: #hardness,
@@ -837,7 +837,7 @@ pub(crate) fn build() -> TokenStream {
     }
 
     quote! {
-        use crate::{BlockState, Block, CollisionShape, blocks::Flammable};
+        use crate::{BlockStateId, BlockState, Block, BlockId, CollisionShape, blocks::Flammable};
         use crate::block_state::PistonBehavior;
         use pumpkin_util::math::int_provider::{UniformIntProvider, IntProvider, NormalIntProvider};
         use pumpkin_util::loot_table::*;
@@ -860,12 +860,12 @@ pub(crate) fn build() -> TokenStream {
             fn from_index(index: u16) -> Self where Self: Sized;
 
             // Check if a block uses this property
-            fn handles_block_id(block_id: u16) -> bool where Self: Sized;
+            fn handles_block_id(block_id: BlockId) -> bool where Self: Sized;
 
             // Convert properties to a state id.
-            fn to_state_id(&self, block: &Block) -> u16;
+            fn to_state_id(&self, block: &Block) -> BlockStateId;
             // Convert a state id back to properties.
-            fn from_state_id(state_id: u16, block: &Block) -> Self where Self: Sized;
+            fn from_state_id(state_id: BlockStateId, block: &Block) -> Self where Self: Sized;
             // Get the default properties.
             fn default(block: &Block) -> Self where Self: Sized;
 
@@ -901,20 +901,20 @@ pub(crate) fn build() -> TokenStream {
            Block::from_registry_key(key)
         }
 
-        pub fn get_block_by_id(id: u16) -> &'static Block {
+        pub fn get_block_by_id(id: BlockId) -> &'static Block {
             Block::from_id(id)
         }
 
-        pub fn get_state_by_state_id(id: u16) -> &'static BlockState {
+        pub fn get_state_by_state_id(id: BlockStateId) -> &'static BlockState {
             let state: &BlockState = Block::from_state_id(id).states.iter().find(|state| state.id == id).unwrap();
             state
         }
 
-        pub fn get_block_by_state_id(id: u16) -> &'static Block {
+        pub fn get_block_by_state_id(id: BlockStateId) -> &'static Block {
             Block::from_state_id(id)
         }
 
-        pub fn get_block_and_state_by_state_id(id: u16) -> (&'static Block, &'static BlockState) {
+        pub fn get_block_and_state_by_state_id(id: BlockStateId) -> (&'static Block, &'static BlockState) {
             let block = Block::from_state_id(id);
             let state: &BlockState = block.states.iter().find(|state| state.id == id).unwrap();
             (block, state)
@@ -924,8 +924,8 @@ pub(crate) fn build() -> TokenStream {
             Block::from_item_id(item_id)
         }
 
-        pub fn has_random_ticks(state_id: u16) -> bool {
-            matches!(state_id, #random_tick_state_ids)
+        pub fn has_random_ticks(state_id: BlockStateId) -> bool {
+            matches!(state_id.0, #random_tick_state_ids)
         }
 
         pub fn blocks_movement(block_state: &BlockState) -> bool {
@@ -959,20 +959,20 @@ pub(crate) fn build() -> TokenStream {
             }
 
             #[doc = r" Try to parse a block from a raw id."]
-            pub const fn from_id(id: u16) -> &'static Self {
-                if id as usize >= Self::RAW_ID_FROM_STATE_ID.len() {
+            pub const fn from_id(id: BlockId) -> &'static Self {
+                if id.0 as usize >= Self::TYPE_FROM_RAW_ID.len() {
                     &Self::AIR
                 } else {
-                    Self::TYPE_FROM_RAW_ID[id as usize]
+                    Self::TYPE_FROM_RAW_ID[id.0 as usize]
                 }
             }
 
             #[doc = r" Try to parse a block from a state id."]
-            pub const fn from_state_id(id: u16) -> &'static Self {
-                if id as usize >= Self::RAW_ID_FROM_STATE_ID.len() {
+            pub const fn from_state_id(id: BlockStateId) -> &'static Self {
+                if id.0 as usize >= Self::RAW_ID_FROM_STATE_ID.len() {
                     return &Self::AIR;
                 }
-                Self::from_id(Self::RAW_ID_FROM_STATE_ID[id as usize])
+                Self::from_id(BlockId(Self::RAW_ID_FROM_STATE_ID[id.0 as usize]))
             }
 
             #[doc = r" Try to parse a block from an item id."]
@@ -985,8 +985,8 @@ pub(crate) fn build() -> TokenStream {
             }
 
             #[doc = r" Get the properties of the block."]
-            pub fn properties(&self, state_id: u16) -> Option<Box<dyn BlockProperties>> {
-                match self.id {
+            pub fn properties(&self, state_id: BlockStateId) -> Option<Box<dyn BlockProperties>> {
+                match self.id.0 {
                     #block_properties_from_state_and_block_id
                     _ => None
                 }
@@ -994,7 +994,7 @@ pub(crate) fn build() -> TokenStream {
 
             #[doc = r" Get the properties of the block."]
             pub fn from_properties(&self, props: HashMap<&str, &str>) -> Option<Box<dyn BlockProperties>> {
-                match self.id {
+                match self.id.0 {
                     #block_properties_from_props_and_name
                     _ => None
                 }

@@ -6,9 +6,8 @@ use pumpkin_data::block_properties::{
 };
 use pumpkin_data::entity::EntityPose;
 use pumpkin_data::tag::{RegistryKey, get_tag_values};
-use pumpkin_data::{Block, BlockDirection};
+use pumpkin_data::{Block, BlockDirection, BlockStateId};
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::BlockStateId;
 use pumpkin_world::block::entities::chest::ChestBlockEntity;
 use pumpkin_world::world::BlockFlags;
 

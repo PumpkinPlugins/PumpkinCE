@@ -1,9 +1,9 @@
 use crate::block::pumpkin_block::{BlockMetadata, OnPlaceArgs, PumpkinBlock};
 use crate::entity::EntityBase;
 use async_trait::async_trait;
+use pumpkin_data::BlockStateId;
 use pumpkin_data::block_properties::{BlockProperties, WhiteBannerLikeProperties};
 use pumpkin_data::tag::{RegistryKey, get_tag_values};
-use pumpkin_world::BlockStateId;
 
 pub struct BannerBlock;
 

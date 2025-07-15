@@ -1,7 +1,6 @@
 use crate::block::pumpkin_block::GetStateForNeighborUpdateArgs;
 use crate::block::pumpkin_block::OnPlaceArgs;
 use async_trait::async_trait;
-use pumpkin_data::Block;
 use pumpkin_data::BlockDirection;
 use pumpkin_data::BlockState;
 use pumpkin_data::block_properties::BlockProperties;
@@ -13,8 +12,8 @@ use pumpkin_data::block_properties::WestWallShape;
 use pumpkin_data::tag::RegistryKey;
 use pumpkin_data::tag::Tagable;
 use pumpkin_data::tag::get_tag_values;
+use pumpkin_data::{Block, BlockStateId};
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::BlockStateId;
 
 use crate::block::pumpkin_block::{BlockMetadata, PumpkinBlock};
 use crate::world::World;
@@ -56,7 +55,7 @@ pub async fn compute_wall_state(
     world: &World,
     block: &Block,
     block_pos: &BlockPos,
-) -> u16 {
+) -> BlockStateId {
     let (block_above, block_above_state) = world.get_block_and_block_state(&block_pos.up()).await;
 
     for direction in HorizontalFacing::all() {

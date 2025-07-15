@@ -59,7 +59,7 @@ impl ClientPacket for CChunkData<'_> {
                 blocks_and_biomes_buf.write_u8(network_repr.bits_per_entry)?;
                 match network_repr.palette {
                     NetworkPalette::Single(registry_id) => {
-                        blocks_and_biomes_buf.write_var_int(&registry_id.into())?;
+                        blocks_and_biomes_buf.write_var_int(&registry_id.0.into())?;
                     }
                     NetworkPalette::Indirect(palette) => {
                         blocks_and_biomes_buf.write_var_int(&palette.len().try_into().map_err(
@@ -71,7 +71,7 @@ impl ClientPacket for CChunkData<'_> {
                             },
                         )?)?;
                         for registry_id in palette {
-                            blocks_and_biomes_buf.write_var_int(&registry_id.into())?;
+                            blocks_and_biomes_buf.write_var_int(&registry_id.0.into())?;
                         }
                     }
                     NetworkPalette::Direct => {}

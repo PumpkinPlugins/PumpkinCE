@@ -6,6 +6,7 @@ use crate::entity::player::Player;
 use crate::server::Server;
 use crate::world::World;
 use async_trait::async_trait;
+use pumpkin_data::BlockStateId;
 use pumpkin_data::block_properties;
 use pumpkin_data::fluid;
 use pumpkin_data::fluid::Fluid;
@@ -13,7 +14,6 @@ use pumpkin_data::item::Item;
 use pumpkin_data::{Block, BlockDirection, BlockState};
 use pumpkin_protocol::java::server::play::SUseItemOn;
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::BlockStateId;
 use pumpkin_world::item::ItemStack;
 use pumpkin_world::world::{BlockAccessor, BlockFlags, BlockRegistryExt};
 use std::collections::HashMap;
@@ -336,7 +336,7 @@ impl BlockRegistry {
         &self,
         world: &Arc<World>,
         block: &Block,
-        state_id: u16,
+        state_id: BlockStateId,
         position: &BlockPos,
         direction: BlockDirection,
         player: &Player,

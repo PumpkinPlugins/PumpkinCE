@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use pumpkin_data::{
-    Block,
+    Block, BlockStateId,
     block_properties::{BlockProperties, CakeLikeProperties, EnumVariants, Integer0To6},
     item::Item,
     sound::{Sound, SoundCategory},
@@ -31,7 +31,7 @@ impl CakeBlock {
         player: &Player,
         block: &Block,
         location: &BlockPos,
-        state_id: u16,
+        state_id: BlockStateId,
     ) -> BlockActionResult {
         match player.gamemode.load() {
             GameMode::Survival | GameMode::Adventure => {

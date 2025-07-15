@@ -7,6 +7,7 @@ use crate::block::registry::BlockActionResult;
 use crate::entity::Entity;
 use crate::entity::item::ItemEntity;
 use async_trait::async_trait;
+use pumpkin_data::BlockStateId;
 use pumpkin_data::block_properties::{BlockProperties, Facing};
 use pumpkin_data::entity::EntityType;
 use pumpkin_data::world::WorldEvent;
@@ -16,7 +17,6 @@ use pumpkin_inventory::screen_handler::{InventoryPlayer, ScreenHandler, ScreenHa
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::vector3::Vector3;
 use pumpkin_util::text::TextComponent;
-use pumpkin_world::BlockStateId;
 use pumpkin_world::block::entities::dropper::DropperBlockEntity;
 use pumpkin_world::chunk::TickPriority;
 use pumpkin_world::inventory::Inventory;

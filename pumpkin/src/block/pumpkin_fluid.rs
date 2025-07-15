@@ -2,15 +2,16 @@ use std::sync::Arc;
 
 use crate::entity::{EntityBase, player::Player};
 use async_trait::async_trait;
-use pumpkin_data::BlockDirection;
+//use pumpkin_data::BlockDirection;
 use pumpkin_data::{fluid::Fluid, item::Item};
-use pumpkin_protocol::java::server::play::SUseItemOn;
+//use pumpkin_protocol::java::server::play::SUseItemOn;
+use pumpkin_data::BlockStateId;
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::BlockStateId;
 
 use crate::{server::Server, world::World};
 
-use super::{BlockIsReplacing, registry::BlockActionResult};
+//use super::BlockIsReplacing;
+use super::registry::BlockActionResult;
 
 #[async_trait]
 pub trait PumpkinFluid: Send + Sync {
@@ -46,19 +47,19 @@ pub trait PumpkinFluid: Send + Sync {
     ) {
     }
 
-    #[allow(clippy::too_many_arguments)]
-    async fn on_place(
-        &self,
-        _server: &Server,
-        _world: &Arc<World>,
-        fluid: &Fluid,
-        _face: BlockDirection,
-        _block_pos: &BlockPos,
-        _use_item_on: &SUseItemOn,
-        _replacing: BlockIsReplacing,
-    ) -> BlockStateId {
-        fluid.default_state_index
-    }
+    // #[allow(clippy::too_many_arguments)]
+    // async fn on_place(
+    //     &self,
+    //     _server: &Server,
+    //     _world: &Arc<World>,
+    //     fluid: &Fluid,
+    //     _face: BlockDirection,
+    //     _block_pos: &BlockPos,
+    //     _use_item_on: &SUseItemOn,
+    //     _replacing: BlockIsReplacing,
+    // ) -> u16 {
+    //     fluid.default_state_index
+    // }
 
     async fn get_state_for_neighbour_update(
         &self,
@@ -67,7 +68,7 @@ pub trait PumpkinFluid: Send + Sync {
         _block_pos: &BlockPos,
         _notify: bool,
     ) -> BlockStateId {
-        0
+        BlockStateId::AIR
     }
 
     async fn on_neighbor_update(

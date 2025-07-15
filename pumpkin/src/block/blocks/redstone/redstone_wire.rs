@@ -6,10 +6,9 @@ use pumpkin_data::block_properties::{
     ObserverLikeProperties, RedstoneWireLikeProperties, RepeaterLikeProperties,
     SouthWireConnection, WestWireConnection,
 };
-use pumpkin_data::{Block, BlockDirection, BlockState, HorizontalFacingExt};
+use pumpkin_data::{Block, BlockDirection, BlockState, BlockStateId, HorizontalFacingExt};
 use pumpkin_macros::pumpkin_block;
 use pumpkin_util::math::position::BlockPos;
-use pumpkin_world::BlockStateId;
 use pumpkin_world::world::{BlockAccessor, BlockFlags};
 
 use crate::block::pumpkin_block::{
