@@ -26,7 +26,7 @@ pub struct Context {
     metadata: PluginMetadata<'static>,
     pub server: Arc<Server>,
     pub handlers: Arc<RwLock<HandlerMap>>,
-    pub plugin_manager: Arc<RwLock<PluginManager>>,
+    pub plugin_manager: Arc<PluginManager>,
     pub permission_manager: Arc<RwLock<PermissionManager>>,
 }
 impl Context {
@@ -44,7 +44,7 @@ impl Context {
         metadata: PluginMetadata<'static>,
         server: Arc<Server>,
         handlers: Arc<RwLock<HandlerMap>>,
-        plugin_manager: Arc<RwLock<PluginManager>>,
+        plugin_manager: Arc<PluginManager>,
         permission_manager: Arc<RwLock<PermissionManager>>,
     ) -> Self {
         Self {
@@ -97,8 +97,7 @@ impl Context {
     /// context.register_service("my_service".to_string(), Arc::new(MyService::new())).await;
     /// ```
     pub async fn register_service<T: Any + Send + Sync>(&self, name: String, service: Arc<T>) {
-        let manager = self.plugin_manager.read().await;
-        let mut services = manager.services.write().await;
+        let mut services = self.plugin_manager.services.write().await;
         services.insert(name, service);
     }
 
@@ -124,8 +123,7 @@ impl Context {
     /// }
     /// ```
     pub async fn get_service<T: Any + Send + Sync>(&self, name: &str) -> Option<Arc<T>> {
-        let manager = self.plugin_manager.read().await;
-        let services = manager.services.read().await;
+        let services = self.plugin_manager.services.read().await;
         services.get(name)?.clone().downcast::<T>().ok()
     }
 
@@ -267,10 +265,9 @@ impl Context {
         &self,
         loader: Arc<dyn crate::plugin::loader::PluginLoader>,
     ) -> bool {
-        let mut manager = self.plugin_manager.write().await;
-        let before_count = manager.loaded_plugins().len();
-        manager.add_loader(loader).await;
-        let after_count = manager.loaded_plugins().len();
+        let before_count = self.plugin_manager.loaded_plugins().await.len();
+        self.plugin_manager.add_loader(loader).await;
+        let after_count = self.plugin_manager.loaded_plugins().await.len();
 
         // Return true if any new plugins were loaded
         after_count > before_count
