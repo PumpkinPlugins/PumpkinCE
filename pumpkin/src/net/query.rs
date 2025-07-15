@@ -139,9 +139,9 @@ async fn handle_packet(
                                 }
                             }
 
-                            let plugin_manager = crate::PLUGIN_MANAGER.read().await;
-                            let plugins = plugin_manager
+                            let plugins = crate::PLUGIN_MANAGER
                                 .active_plugins()
+                                .await
                                 .into_iter()
                                 .map(|meta| meta.name.to_string())
                                 .reduce(|acc, name| format!("{acc}, {name}"))
