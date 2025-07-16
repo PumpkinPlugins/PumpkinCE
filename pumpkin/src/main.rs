@@ -207,17 +207,21 @@ async fn setup_sighandler() -> io::Result<()> {
 // Unix signal handling
 #[cfg(unix)]
 async fn setup_sighandler() -> io::Result<()> {
-    if signal(SignalKind::interrupt())?.recv().await.is_some() {
-        handle_interrupt();
-    }
+    let mut interrupt = signal(SignalKind::interrupt())?;
+    let mut hangup = signal(SignalKind::hangup())?;
+    let mut terminate = signal(SignalKind::terminate())?;
 
-    if signal(SignalKind::hangup())?.recv().await.is_some() {
-        handle_interrupt();
+    loop {
+        tokio::select! {
+            _ = interrupt.recv() => {
+                handle_interrupt();
+            }
+            _ = hangup.recv() => {
+                handle_interrupt();
+            }
+            _ = terminate.recv() => {
+                handle_interrupt();
+            }
+        }
     }
-
-    if signal(SignalKind::terminate())?.recv().await.is_some() {
-        handle_interrupt();
-    }
-
-    Ok(())
 }
