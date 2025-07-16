@@ -21,7 +21,7 @@ impl Default for RCONConfig {
     fn default() -> Self {
         Self {
             enabled: false,
-            address: SocketAddr::new(Ipv4Addr::new(0, 0, 0, 0).into(), 25575),
+            address: SocketAddr::new(Ipv4Addr::new(127, 0, 0, 1).into(), 25575),
             password: "".to_string(),
             max_connections: 0,
             logging: Default::default(),
