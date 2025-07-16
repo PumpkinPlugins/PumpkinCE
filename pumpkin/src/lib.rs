@@ -29,6 +29,8 @@ use tokio::sync::{Mutex, Notify, RwLock};
 use tokio_util::task::TaskTracker;
 
 pub mod block;
+#[cfg(feature = "clap")]
+pub mod cli;
 pub mod command;
 pub mod data;
 pub mod entity;
