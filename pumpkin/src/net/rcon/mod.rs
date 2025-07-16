@@ -18,8 +18,8 @@ impl RCONServer {
     pub async fn run(config: RCONConfig, server: Arc<Server>) -> Result<(), std::io::Error> {
         let password: Arc<String> = Arc::new(config.password.clone());
         if password.is_empty() {
-            // Vanilla minecraft actually disables it then we might also what to do that
-            log::warn!("RCON Password is empty!");
+            log::warn!("No RCON password set, RCON disabled!");
+            return Ok(());
         }
 
         let listener = tokio::net::TcpListener::bind(config.address).await?;
@@ -52,12 +52,14 @@ impl RCONServer {
             if config.max_connections != 0
                 && connections.load(Ordering::Relaxed) >= config.max_connections
             {
-                log::info!("RCON ({}): Client tried to connect wile connection limit is reached", address);
+                log::info!(
+                    "RCON ({address}): Client tried to connect wile connection limit is reached"
+                );
                 drop(connection); // Make sure we drop the connection
                 continue;
             }
             // FIXME: Add login timeout per ip to protect against bute force attacks!
-            log::debug!("RCON ({}): Connection opened", address);
+            log::debug!("RCON ({address}): Connection opened");
 
             connections.fetch_add(1, Ordering::Relaxed);
             let mut client = RCONClient::new(connection, address);
@@ -68,7 +70,9 @@ impl RCONServer {
 
             tokio::spawn(async move {
                 while !client.handle(&server, &password).await {}
-                log::info!("RCON ({}): Client disconnected", client.address);
+                if config.logging.quit {
+                    log::info!("RCON ({}): Client disconnected", client.address);
+                }
                 drop(client); // Make sure we drop the connection
                 connections.fetch_sub(1, Ordering::Relaxed);
             });
@@ -148,6 +152,10 @@ impl RCONClient {
         config: &RCONConfig,
     ) -> Result<(), PacketError> {
         if !self.logged_in {
+            log::warn!(
+                "RCON ({}): Client attempted to execute a command while not logged in",
+                self.address
+            );
             return Ok(());
         }
 
@@ -157,6 +165,12 @@ impl RCONClient {
         let packet_body = packet.get_body().to_owned();
         let output_clone = output.clone();
 
+        log::info!(
+            "RCON ({}): Client executed command '{}'",
+            self.address,
+            packet_body
+        );
+
         let dispatcher = server_clone.command_dispatcher.read().await;
         dispatcher
             .handle_command(
@@ -165,8 +179,6 @@ impl RCONClient {
                 &packet_body,
             )
             .await;
-
-        // TODO: log the actual command that was executed not only the output
 
         // TODO: further investigate into Multiple packet Responses https://developer.valvesoftware.com/wiki/Source_RCON_Protocol#Multiple-packet_Responses
         let output = output.lock().await.join("\n");
@@ -184,7 +196,6 @@ impl RCONClient {
         self.send(ClientboundPacket::Output, packet.get_id(), output.as_str())
             .await?;
 
-
         Ok(())
     }
 
@@ -196,8 +207,8 @@ impl RCONClient {
         match packet.get_type() {
             ServerboundPacket::Auth => self.handle_auth_packet(&packet, config, password).await?,
             ServerboundPacket::ExecCommand => {
-                self.handle_exec_command_packet(&packet, &server, config)
-                    .await?
+                self.handle_exec_command_packet(&packet, server, config)
+                    .await?;
             }
         }
         Ok(())
