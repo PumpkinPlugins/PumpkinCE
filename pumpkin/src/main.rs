@@ -69,6 +69,9 @@ pub mod plugin;
 pub mod server;
 pub mod world;
 
+#[cfg(feature = "clap")]
+use pumpkin::cli::parse;
+
 #[cfg(feature = "dhat-heap")]
 #[global_allocator]
 static ALLOC: dhat::Alloc = dhat::Alloc;
@@ -110,6 +113,9 @@ async fn main() {
         let mut static_loc = HEAP_PROFILER.lock().await;
         *static_loc = Some(profiler);
     };
+
+    #[cfg(feature = "clap")]
+    parse().await;
 
     let time = Instant::now();
 
