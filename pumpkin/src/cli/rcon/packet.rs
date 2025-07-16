@@ -46,14 +46,14 @@ pub enum PacketError {
 
 #[derive(Debug)]
 pub struct Packet {
-    pub typ: i32,
+    pub p_type: i32,
     pub body: String,
     pub id: i32,
 }
 
 impl Packet {
-    pub fn new(typ: i32, body: String, id: i32) -> Packet {
-        Self { typ, body, id }
+    pub fn new(p_type: i32, body: String, id: i32) -> Packet {
+        Self { p_type, body, id }
     }
 
     pub async fn deserialize(incoming: &mut Vec<u8>) -> Result<Option<Self>, PacketError> {
@@ -73,7 +73,7 @@ impl Packet {
         }
 
         let id = cursor.read_i32_le().await?;
-        let typ = cursor.read_i32_le().await?;
+        let p_type = cursor.read_i32_le().await?;
 
         let mut body_bytes = vec![];
         cursor.read_until(0, &mut body_bytes)?;
@@ -89,7 +89,7 @@ impl Packet {
 
         Ok(Some(Packet {
             id,
-            typ,
+            p_type,
             body: String::from_utf8(body_bytes)?,
         }))
     }
@@ -99,7 +99,7 @@ impl Packet {
         let mut buf = BytesMut::with_capacity(length + 4);
         buf.put_i32_le(length as i32);
         buf.put_i32_le(self.id);
-        buf.put_i32_le(self.typ);
+        buf.put_i32_le(self.p_type);
         buf.put_slice(self.body.as_bytes());
         buf.put_u8(0);
         buf.put_u8(0);

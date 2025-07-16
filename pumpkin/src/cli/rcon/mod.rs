@@ -56,7 +56,7 @@ pub async fn login(rcon_config: &RCONConfig, stream: Arc<Mutex<TcpStream>>) -> R
     drop(stream_lock);
 
     let packet = read(stream.clone()).await.unwrap();
-    if packet.typ != KnownPacketType::Auth as i32 {
+    if packet.p_type != KnownPacketType::Auth as i32 {
         return Err(WrongPacket);
     }
     if packet.id == -1 {
@@ -80,7 +80,7 @@ pub async fn send_command(command: String, stream: Arc<Mutex<TcpStream>>) -> Res
     drop(stream_lock);
 
     let packet = read(stream.clone()).await.unwrap();
-    if packet.typ != KnownPacketType::Response as i32 {
+    if packet.p_type != KnownPacketType::Response as i32 {
         return Err(WrongPacket);
     }
     if packet.id != id {
